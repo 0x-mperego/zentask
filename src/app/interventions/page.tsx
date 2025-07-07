@@ -119,7 +119,9 @@ const columns: ColumnDef<Intervention>[] = [
       const intervention = row.original
       return (
         <div className="flex items-center gap-2">
-          {intervention.urgent && <div className="w-2 h-2 rounded-full bg-red-500" />}
+          <div className="w-2 h-2 rounded-full flex-shrink-0">
+            {intervention.urgent && <div className="w-2 h-2 rounded-full bg-red-500" />}
+          </div>
           <div className="font-mono text-sm text-muted-foreground">{row.getValue("code")}</div>
         </div>
       )
@@ -138,12 +140,12 @@ const columns: ColumnDef<Intervention>[] = [
         "Consulenza": "bg-purple-500"
       }
       return (
-        <div className="space-y-1">
-          <div className="font-medium truncate">{row.getValue("description")}</div>
-          <div className="flex items-center gap-1 bg-gray-50 rounded-md px-2 py-1 w-fit">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 bg-gray-50 rounded-md px-2 py-1 flex-shrink-0">
             <div className={`w-2 h-2 rounded-full ${activityColors[intervention.activity] || 'bg-gray-500'}`} />
             <span className="text-xs text-gray-600">{intervention.activity}</span>
           </div>
+          <div className="font-medium truncate">{row.getValue("description")}</div>
         </div>
       )
     },
