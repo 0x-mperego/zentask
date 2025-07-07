@@ -160,14 +160,6 @@ const columns: ColumnDef<Intervention>[] = [
     size: 180,
   },
   {
-    accessorKey: "activity", 
-    header: "Attività",
-    cell: ({ row }) => (
-      <div className="text-sm">{row.getValue("activity")}</div>
-    ),
-    size: 120,
-  },
-  {
     accessorKey: "status",
     header: "Stato",
     cell: ({ row }) => {
@@ -355,16 +347,6 @@ export default function InterventionsPage() {
             </SelectContent>
           </Select>
           
-          <Select>
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Attività" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="installation">Installazione</SelectItem>
-              <SelectItem value="maintenance">Manutenzione</SelectItem>
-              <SelectItem value="repair">Riparazione</SelectItem>
-            </SelectContent>
-          </Select>
           
           <Select>
             <SelectTrigger className="w-40">
