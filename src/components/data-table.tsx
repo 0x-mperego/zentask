@@ -179,7 +179,7 @@ export function DataTable<TData, TValue>({
         <>
           {/* Desktop Table */}
           <div className="hidden md:block">
-            <div className="rounded-md border">
+            <div className="border pl-4">
               <Table>
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (

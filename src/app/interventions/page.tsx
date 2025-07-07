@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { LayoutNew } from "@/components/layout-new"
 import { DataTable } from "@/components/data-table"
 import { FormSheet, useFormSheet } from "@/components/form-sheet"
@@ -31,6 +32,7 @@ interface Intervention {
   endDate?: string
   duration: string
   createdAt: string
+  notes?: string
 }
 
 const mockData: Intervention[] = [
@@ -46,7 +48,8 @@ const mockData: Intervention[] = [
     startDate: "2025-07-07",
     endDate: "2025-07-08",
     duration: "3h 25min",
-    createdAt: "2025-07-07T09:00:00Z"
+    createdAt: "2025-07-07T09:00:00Z",
+    notes: "Backup automatico configurato correttamente"
   },
   {
     id: "2", 
@@ -60,7 +63,8 @@ const mockData: Intervention[] = [
     startDate: "2025-07-06",
     endDate: "2025-07-06",
     duration: "2h 15min",
-    createdAt: "2025-07-06T14:00:00Z"
+    createdAt: "2025-07-06T14:00:00Z",
+    notes: "Sistema aggiornato senza problemi"
   },
   {
     id: "3",
@@ -73,7 +77,8 @@ const mockData: Intervention[] = [
     urgent: false,
     startDate: "2025-07-08",
     duration: "1h 30min",
-    createdAt: "2025-07-07T10:30:00Z"
+    createdAt: "2025-07-07T10:30:00Z",
+    notes: "Driver aggiornati richiesti"
   },
   {
     id: "4",
@@ -86,7 +91,8 @@ const mockData: Intervention[] = [
     urgent: true,
     startDate: "2025-07-07",
     duration: "5h 45min",
-    createdAt: "2025-07-07T08:15:00Z"
+    createdAt: "2025-07-07T08:15:00Z",
+    notes: "Configurazione POS complessa"
   },
   {
     id: "5",
@@ -100,7 +106,8 @@ const mockData: Intervention[] = [
     startDate: "2025-07-05",
     endDate: "2025-07-05", 
     duration: "4h 10min",
-    createdAt: "2025-07-05T09:30:00Z"
+    createdAt: "2025-07-05T09:30:00Z",
+    notes: "Migrazione completata con successo"
   }
 ]
 
@@ -108,10 +115,16 @@ const columns: ColumnDef<Intervention>[] = [
   {
     accessorKey: "code",
     header: "ID",
-    cell: ({ row }) => (
-      <div className="font-mono text-sm text-muted-foreground">{row.getValue("code")}</div>
-    ),
-    size: 100,
+    cell: ({ row }) => {
+      const intervention = row.original
+      return (
+        <div className="flex items-center gap-2">
+          <div className={`w-2 h-2 rounded-full ${intervention.urgent ? 'bg-red-500' : 'bg-gray-300'}`} />
+          <div className="font-mono text-sm text-muted-foreground">{row.getValue("code")}</div>
+        </div>
+      )
+    },
+    size: 120,
   },
   {
     accessorKey: "description",
@@ -202,6 +215,20 @@ const columns: ColumnDef<Intervention>[] = [
 ]
 
 export default function InterventionsPage() {
+  const [globalFilter, setGlobalFilter] = React.useState("")
+
+  const filteredData = React.useMemo(() => {
+    if (!globalFilter) return mockData
+    
+    const searchTerm = globalFilter.toLowerCase()
+    return mockData.filter(intervention => 
+      intervention.code.toLowerCase().includes(searchTerm) ||
+      intervention.description.toLowerCase().includes(searchTerm) ||
+      intervention.client.toLowerCase().includes(searchTerm) ||
+      (intervention.notes && intervention.notes.toLowerCase().includes(searchTerm))
+    )
+  }, [globalFilter])
+
   return (
     <LayoutNew>
       <div className="space-y-6">
@@ -285,8 +312,10 @@ export default function InterventionsPage() {
         <div className="flex items-center gap-4">
           <div className="relative flex-1">
             <Input
-              placeholder="Cerca per codice, descrizione o cliente..."
+              placeholder="Cerca per codice, descrizione, cliente o note..."
               className="pl-10"
+              value={globalFilter}
+              onChange={(e) => setGlobalFilter(e.target.value)}
             />
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           </div>
@@ -334,7 +363,7 @@ export default function InterventionsPage() {
       <div className="-mx-4">
         <DataTable
           columns={columns}
-          data={mockData}
+          data={filteredData}
           emptyState={{
             title: "Nessun intervento trovato",
             description: "Inizia creando il tuo primo intervento",
