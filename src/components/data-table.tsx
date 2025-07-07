@@ -180,15 +180,16 @@ export function DataTable<TData, TValue>({
         <>
           {/* Desktop Table */}
           <div className="hidden md:block">
-            <div className="border pl-4">
+            <div className="border">
               <Table>
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
+                      {headerGroup.headers.map((header, index) => (
                         <TableHead 
                           key={header.id}
                           style={{ width: header.getSize() }}
+                          className={index === 0 ? "pl-4" : ""}
                         >
                           {header.isPlaceholder
                             ? null
@@ -207,10 +208,11 @@ export function DataTable<TData, TValue>({
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
                     >
-                      {row.getVisibleCells().map((cell) => (
+                      {row.getVisibleCells().map((cell, index) => (
                         <TableCell 
                           key={cell.id}
                           style={{ width: cell.column.getSize() }}
+                          className={index === 0 ? "pl-4" : ""}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

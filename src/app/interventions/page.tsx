@@ -116,7 +116,12 @@ const mockData: Intervention[] = [
 const columns: ColumnDef<Intervention>[] = [
   {
     accessorKey: "code",
-    header: "ID",
+    header: () => (
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 flex-shrink-0"></div>
+        <span>ID</span>
+      </div>
+    ),
     cell: ({ row }) => {
       const intervention = row.original
       return (
