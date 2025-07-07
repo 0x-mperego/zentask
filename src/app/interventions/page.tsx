@@ -127,11 +127,11 @@ export default function InterventionsPage() {
   const [globalFilter, setGlobalFilter] = React.useState("")
   const [editingIntervention, setEditingIntervention] = React.useState<Intervention | null>(null)
   const [deletingIntervention, setDeletingIntervention] = React.useState<Intervention | null>(null)
-  const [statusFilter, setStatusFilter] = React.useState("")
-  const [employeeFilter, setEmployeeFilter] = React.useState("")
-  const [urgencyFilter, setUrgencyFilter] = React.useState("")
-  const [activityFilter, setActivityFilter] = React.useState("")
-  const [clientFilter, setClientFilter] = React.useState("")
+  const [statusFilter, setStatusFilter] = React.useState("all")
+  const [employeeFilter, setEmployeeFilter] = React.useState("all")
+  const [urgencyFilter, setUrgencyFilter] = React.useState("all")
+  const [activityFilter, setActivityFilter] = React.useState("all")
+  const [clientFilter, setClientFilter] = React.useState("all")
 
   const filteredData = React.useMemo(() => {
     let filtered = mockData
@@ -148,17 +148,17 @@ export default function InterventionsPage() {
     }
 
     // Filtro stato
-    if (statusFilter) {
+    if (statusFilter && statusFilter !== "all") {
       filtered = filtered.filter(intervention => intervention.status === statusFilter)
     }
 
     // Filtro dipendente
-    if (employeeFilter) {
+    if (employeeFilter && employeeFilter !== "all") {
       filtered = filtered.filter(intervention => intervention.employee === employeeFilter)
     }
 
     // Filtro urgenza
-    if (urgencyFilter) {
+    if (urgencyFilter && urgencyFilter !== "all") {
       if (urgencyFilter === "urgent") {
         filtered = filtered.filter(intervention => intervention.urgent)
       } else if (urgencyFilter === "normal") {
@@ -167,12 +167,12 @@ export default function InterventionsPage() {
     }
 
     // Filtro attività
-    if (activityFilter) {
+    if (activityFilter && activityFilter !== "all") {
       filtered = filtered.filter(intervention => intervention.activity === activityFilter)
     }
 
     // Filtro cliente
-    if (clientFilter) {
+    if (clientFilter && clientFilter !== "all") {
       filtered = filtered.filter(intervention => intervention.client === clientFilter)
     }
 
@@ -443,7 +443,7 @@ export default function InterventionsPage() {
               <SelectValue placeholder="Stato" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="all">Tutti</SelectItem>
               <SelectItem value="In corso">In corso</SelectItem>
               <SelectItem value="Completato">Completato</SelectItem>
               <SelectItem value="Programmato">Programmato</SelectItem>
@@ -456,7 +456,7 @@ export default function InterventionsPage() {
               <SelectValue placeholder="Urgenza" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="all">Tutti</SelectItem>
               <SelectItem value="urgent">Urgenti</SelectItem>
               <SelectItem value="normal">Normali</SelectItem>
             </SelectContent>
@@ -467,7 +467,7 @@ export default function InterventionsPage() {
               <SelectValue placeholder="Attività" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tutte</SelectItem>
+              <SelectItem value="all">Tutte</SelectItem>
               <SelectItem value="Installazione">Installazione</SelectItem>
               <SelectItem value="Manutenzione">Manutenzione</SelectItem>
               <SelectItem value="Riparazione">Riparazione</SelectItem>
@@ -480,7 +480,7 @@ export default function InterventionsPage() {
               <SelectValue placeholder="Cliente" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="all">Tutti</SelectItem>
               <SelectItem value="Azienda ABC S.r.l.">Azienda ABC S.r.l.</SelectItem>
               <SelectItem value="Studio Legale XYZ">Studio Legale XYZ</SelectItem>
               <SelectItem value="Farmacia Centrale">Farmacia Centrale</SelectItem>
@@ -493,7 +493,7 @@ export default function InterventionsPage() {
               <SelectValue placeholder="Dipendente" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="all">Tutti</SelectItem>
               <SelectItem value="Mario Rossi">Mario Rossi</SelectItem>
               <SelectItem value="Luigi Verdi">Luigi Verdi</SelectItem>
               <SelectItem value="Anna Bianchi">Anna Bianchi</SelectItem>
