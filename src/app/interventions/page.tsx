@@ -6,6 +6,8 @@ import { DataTable } from "@/components/data-table"
 import { FormSheet, useFormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Pill } from "@/components/ui/pill"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -133,18 +135,11 @@ const columns: ColumnDef<Intervention>[] = [
     header: "Descrizione",
     cell: ({ row }) => {
       const intervention = row.original
-      const activityColors = {
-        "Installazione": "bg-blue-500",
-        "Manutenzione": "bg-green-500", 
-        "Riparazione": "bg-orange-500",
-        "Consulenza": "bg-purple-500"
-      }
       return (
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-gray-50 rounded-md px-2 py-1 flex-shrink-0">
-            <div className={`w-2 h-2 rounded-full ${activityColors[intervention.activity] || 'bg-gray-500'}`} />
-            <span className="text-xs text-gray-600">{intervention.activity}</span>
-          </div>
+          <Pill variant="default" size="sm" className="flex-shrink-0">
+            {intervention.activity}
+          </Pill>
           <div className="font-medium truncate">{row.getValue("description")}</div>
         </div>
       )
@@ -164,10 +159,18 @@ const columns: ColumnDef<Intervention>[] = [
     header: "Stato",
     cell: ({ row }) => {
       const status = row.getValue("status") as string
+      const statusConfig: Record<string, { variant: "success" | "warning" | "info" | "error" | "default", color: string }> = {
+        "Completato": { variant: "success", color: "bg-green-500" },
+        "In corso": { variant: "warning", color: "bg-yellow-500" },
+        "Programmato": { variant: "info", color: "bg-blue-500" },
+        "Sospeso": { variant: "error", color: "bg-red-500" }
+      }
+      const config = statusConfig[status] || { variant: "default", color: "bg-gray-500" }
+      
       return (
-        <Badge variant={status === "Completato" ? "default" : status === "In corso" ? "secondary" : "outline"}>
+        <Pill variant={config.variant} size="sm" status statusColor={config.color}>
           {status}
-        </Badge>
+        </Pill>
       )
     },
     size: 120,
@@ -175,10 +178,25 @@ const columns: ColumnDef<Intervention>[] = [
   {
     accessorKey: "employee",
     header: "Dipendente",
-    cell: ({ row }) => (
-      <div className="text-sm">{row.getValue("employee")}</div>
-    ),
-    size: 130,
+    cell: ({ row }) => {
+      const employee = row.getValue("employee") as string
+      return (
+        <Pill 
+          variant="default" 
+          size="sm"
+          avatar={
+            <Avatar className="w-4 h-4">
+              <AvatarFallback className="text-xs bg-gray-500 text-white">
+                {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          }
+        >
+          {employee}
+        </Pill>
+      )
+    },
+    size: 150,
   },
   {
     accessorKey: "startDate",
