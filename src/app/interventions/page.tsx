@@ -32,55 +32,102 @@ const mockData: Intervention[] = [
   {
     id: "1",
     code: "INT-00001",
-    description: "Installazione nuovo sistema",
-    client: "Azienda ABC",
+    description: "Installazione nuovo sistema di backup automatico per server principale",
+    client: "Azienda ABC S.r.l.",
     activity: "Installazione",
     status: "In corso",
     employee: "Mario Rossi",
     urgent: true,
-    startDate: "2024-01-15",
-    endDate: "2024-01-16",
-    duration: "8h",
-    createdAt: "2024-01-15T09:00:00Z"
+    startDate: "2025-07-07",
+    endDate: "2025-07-08",
+    duration: "3h 25min",
+    createdAt: "2025-07-07T09:00:00Z"
   },
   {
     id: "2", 
     code: "INT-00002",
-    description: "Manutenzione server",
+    description: "Manutenzione ordinaria server e aggiornamento sistema operativo",
     client: "Studio Legale XYZ",
     activity: "Manutenzione",
     status: "Completato",
     employee: "Luigi Verdi",
     urgent: false,
-    startDate: "2024-01-14",
-    endDate: "2024-01-14",
-    duration: "4h",
-    createdAt: "2024-01-14T14:00:00Z"
+    startDate: "2025-07-06",
+    endDate: "2025-07-06",
+    duration: "2h 15min",
+    createdAt: "2025-07-06T14:00:00Z"
+  },
+  {
+    id: "3",
+    code: "INT-00003", 
+    description: "Riparazione stampante di rete e configurazione driver",
+    client: "Farmacia Centrale",
+    activity: "Riparazione",
+    status: "Programmato",
+    employee: "Anna Bianchi",
+    urgent: false,
+    startDate: "2025-07-08",
+    duration: "1h 30min",
+    createdAt: "2025-07-07T10:30:00Z"
+  },
+  {
+    id: "4",
+    code: "INT-00004",
+    description: "Installazione nuovo punto vendita e configurazione POS",
+    client: "Negozio Elettronica",
+    activity: "Installazione", 
+    status: "In corso",
+    employee: "Mario Rossi",
+    urgent: true,
+    startDate: "2025-07-07",
+    duration: "5h 45min",
+    createdAt: "2025-07-07T08:15:00Z"
+  },
+  {
+    id: "5",
+    code: "INT-00005",
+    description: "Consulenza tecnica per migrazione cloud",
+    client: "Azienda ABC S.r.l.",
+    activity: "Consulenza",
+    status: "Completato",
+    employee: "Luigi Verdi",
+    urgent: false,
+    startDate: "2025-07-05",
+    endDate: "2025-07-05", 
+    duration: "4h 10min",
+    createdAt: "2025-07-05T09:30:00Z"
   }
 ]
 
 const columns: ColumnDef<Intervention>[] = [
   {
-    accessorKey: "code",
-    header: "Codice",
+    accessorKey: "id",
+    header: "ID",
     cell: ({ row }) => (
-      <div className="font-mono text-sm">{row.getValue("code")}</div>
+      <div className="font-mono text-sm text-muted-foreground">{row.getValue("id")}</div>
     ),
+    size: 60,
   },
   {
     accessorKey: "description",
     header: "Descrizione",
     cell: ({ row }) => (
-      <div className="max-w-[300px] truncate">{row.getValue("description")}</div>
+      <div className="max-w-[400px] truncate font-medium">{row.getValue("description")}</div>
     ),
   },
   {
     accessorKey: "client",
     header: "Cliente",
+    cell: ({ row }) => (
+      <div className="font-medium">{row.getValue("client")}</div>
+    ),
   },
   {
     accessorKey: "activity", 
     header: "Attività",
+    cell: ({ row }) => (
+      <div className="text-sm">{row.getValue("activity")}</div>
+    ),
   },
   {
     accessorKey: "status",
@@ -95,22 +142,45 @@ const columns: ColumnDef<Intervention>[] = [
     },
   },
   {
-    accessorKey: "urgent",
-    header: "Urgente",
-    cell: ({ row }) => {
-      const urgent = row.getValue("urgent") as boolean
-      return urgent ? (
-        <Badge variant="destructive">Urgente</Badge>
-      ) : null
-    },
-  },
-  {
     accessorKey: "employee",
     header: "Dipendente",
+    cell: ({ row }) => (
+      <div className="text-sm">{row.getValue("employee")}</div>
+    ),
+  },
+  {
+    accessorKey: "startDate",
+    header: "Data",
+    cell: ({ row }) => {
+      const date = row.getValue("startDate") as string
+      const formattedDate = new Date(date).toLocaleDateString('it-IT', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      })
+      return (
+        <div className="text-sm text-muted-foreground">{formattedDate}</div>
+      )
+    },
   },
   {
     accessorKey: "duration",
     header: "Durata",
+    cell: ({ row }) => (
+      <div className="text-sm font-mono">{row.getValue("duration")}</div>
+    ),
+  },
+  {
+    id: "actions",
+    header: "Azioni",
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="sm">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </div>
+    ),
+    size: 80,
   },
 ]
 
@@ -194,75 +264,82 @@ export default function InterventionsPage() {
           </FormSheet>
         </div>
 
-        {/* Filters */}
-        <FilterToolbar
-          searchPlaceholder="Cerca per codice, descrizione o cliente..."
-          filters={[
-            {
-              key: "status",
-              label: "Stato",
-              type: "select",
-              options: [
-                { label: "In corso", value: "in-progress" },
-                { label: "Completato", value: "completed" },
-                { label: "Sospeso", value: "suspended" },
-              ],
-            },
-            {
-              key: "activity",
-              label: "Attività",
-              type: "select", 
-              options: [
-                { label: "Installazione", value: "installation" },
-                { label: "Manutenzione", value: "maintenance" },
-                { label: "Riparazione", value: "repair" },
-              ],
-            },
-            {
-              key: "employee",
-              label: "Dipendente",
-              type: "select",
-              options: [
-                { label: "Mario Rossi", value: "mario" },
-                { label: "Luigi Verdi", value: "luigi" },
-              ],
-            },
-          ]}
-          onExport={() => console.log("Export clicked")}
-        />
+        {/* Filters and Table Container */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+          {/* Integrated Filter Bar */}
+          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50">
+            <FilterToolbar
+              searchPlaceholder="Cerca per codice, descrizione o cliente..."
+              filters={[
+                {
+                  key: "status",
+                  label: "Stato",
+                  type: "select",
+                  options: [
+                    { label: "In corso", value: "in-progress" },
+                    { label: "Completato", value: "completed" },
+                    { label: "Sospeso", value: "suspended" },
+                  ],
+                },
+                {
+                  key: "activity",
+                  label: "Attività",
+                  type: "select", 
+                  options: [
+                    { label: "Installazione", value: "installation" },
+                    { label: "Manutenzione", value: "maintenance" },
+                    { label: "Riparazione", value: "repair" },
+                  ],
+                },
+                {
+                  key: "employee",
+                  label: "Dipendente",
+                  type: "select",
+                  options: [
+                    { label: "Mario Rossi", value: "mario" },
+                    { label: "Luigi Verdi", value: "luigi" },
+                  ],
+                },
+              ]}
+              onExport={() => console.log("Export clicked")}
+              className="border-0 bg-transparent"
+            />
+          </div>
 
-        {/* Data Table */}
-        <DataTable
-          columns={columns}
-          data={mockData}
-          emptyState={{
-            title: "Nessun intervento trovato",
-            description: "Inizia creando il tuo primo intervento",
-            icon: <ClipboardList className="h-12 w-12" />,
-          }}
-          mobileCardRender={(intervention) => (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-sm">{intervention.code}</span>
-                <div className="flex gap-2">
-                  {intervention.urgent && (
-                    <Badge variant="destructive" className="text-xs">Urgente</Badge>
-                  )}
-                  <Badge variant={intervention.status === "Completato" ? "default" : "secondary"} className="text-xs">
-                    {intervention.status}
-                  </Badge>
+          {/* Data Table */}
+          <DataTable
+            columns={columns}
+            data={mockData}
+            emptyState={{
+              title: "Nessun intervento trovato",
+              description: "Inizia creando il tuo primo intervento",
+              icon: <ClipboardList className="h-12 w-12" />,
+            }}
+            mobileCardRender={(intervention) => (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm">{intervention.code}</span>
+                  <div className="flex gap-2">
+                    {intervention.urgent && (
+                      <Badge variant="destructive" className="text-xs">Urgente</Badge>
+                    )}
+                    <Badge variant={intervention.status === "Completato" ? "default" : "secondary"} className="text-xs">
+                      {intervention.status}
+                    </Badge>
+                  </div>
+                </div>
+                <p className="font-medium">{intervention.description}</p>
+                <div className="text-sm text-muted-foreground">
+                  <p>Cliente: {intervention.client}</p>
+                  <p>Attività: {intervention.activity}</p>
+                  <p>Dipendente: {intervention.employee}</p>
+                  <p>Durata: {intervention.duration}</p>
                 </div>
               </div>
-              <p className="font-medium">{intervention.description}</p>
-              <div className="text-sm text-muted-foreground">
-                <p>Cliente: {intervention.client}</p>
-                <p>Attività: {intervention.activity}</p>
-                <p>Dipendente: {intervention.employee}</p>
-                <p>Durata: {intervention.duration}</p>
-              </div>
-            </div>
-          )}
-        />
+            )}
+            className="border-0 shadow-none"
+          />
+        </div>
       </div>
     </LayoutNew>
   )
