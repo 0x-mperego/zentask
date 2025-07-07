@@ -179,13 +179,13 @@ export function DataTable<TData, TValue>({
         <>
           {/* Desktop Table */}
           <div className="hidden md:block">
-            <div className={cn("bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden", className?.includes("border-0") && "border-0", className?.includes("shadow-none") && "shadow-none")}>
+            <div className="rounded-md border">
               <Table>
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id} className="border-b border-gray-200 bg-gray-50/50">
+                    <TableRow key={headerGroup.id}>
                       {headerGroup.headers.map((header) => (
-                        <TableHead key={header.id} className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <TableHead key={header.id}>
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -197,15 +197,14 @@ export function DataTable<TData, TValue>({
                     </TableRow>
                   ))}
                 </TableHeader>
-                <TableBody className="bg-white divide-y divide-gray-200">
+                <TableBody>
                   {table.getRowModel().rows.map((row) => (
                     <TableRow
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
-                      className="hover:bg-gray-50 transition-colors"
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className="px-6 py-4 whitespace-nowrap">
+                        <TableCell key={cell.id}>
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -224,40 +223,34 @@ export function DataTable<TData, TValue>({
 
           {/* Pagination */}
           {pagination.showPagination && (
-            <div className={cn("bg-white px-6 py-4 flex items-center justify-between border-t border-gray-200", className?.includes("border-0") && "border-t-0")}>
-              <div className="flex items-center space-x-2">
-                <p className="text-sm text-gray-700">
-                  Mostra <span className="font-medium">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span> a{" "}
-                  <span className="font-medium">
-                    {Math.min(
-                      (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                      table.getFilteredRowModel().rows.length
-                    )}
-                  </span>{" "}
-                  di <span className="font-medium">{table.getFilteredRowModel().rows.length}</span> risultati
-                </p>
+            <div className="flex items-center justify-between space-x-2 py-4">
+              <div className="flex-1 text-sm text-muted-foreground">
+                {table.getFilteredSelectedRowModel().rows.length} di{" "}
+                {table.getFilteredRowModel().rows.length} elemento/i selezionato/i.
               </div>
               <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  className="px-3 py-1 text-sm"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Precedente
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  className="px-3 py-1 text-sm"
-                >
-                  Successivo
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </Button>
+                <p className="text-sm font-medium">
+                  Pagina {table.getState().pagination.pageIndex + 1} di{" "}
+                  {table.getPageCount()}
+                </p>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           )}

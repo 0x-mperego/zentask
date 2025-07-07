@@ -264,82 +264,75 @@ export default function InterventionsPage() {
           </FormSheet>
         </div>
 
-        {/* Filters and Table Container */}
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-          {/* Integrated Filter Bar */}
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50">
-            <FilterToolbar
-              searchPlaceholder="Cerca per codice, descrizione o cliente..."
-              filters={[
-                {
-                  key: "status",
-                  label: "Stato",
-                  type: "select",
-                  options: [
-                    { label: "In corso", value: "in-progress" },
-                    { label: "Completato", value: "completed" },
-                    { label: "Sospeso", value: "suspended" },
-                  ],
-                },
-                {
-                  key: "activity",
-                  label: "Attività",
-                  type: "select", 
-                  options: [
-                    { label: "Installazione", value: "installation" },
-                    { label: "Manutenzione", value: "maintenance" },
-                    { label: "Riparazione", value: "repair" },
-                  ],
-                },
-                {
-                  key: "employee",
-                  label: "Dipendente",
-                  type: "select",
-                  options: [
-                    { label: "Mario Rossi", value: "mario" },
-                    { label: "Luigi Verdi", value: "luigi" },
-                  ],
-                },
-              ]}
-              onExport={() => console.log("Export clicked")}
-              className="border-0 bg-transparent"
-            />
-          </div>
+        {/* Filters */}
+        <FilterToolbar
+          searchPlaceholder="Cerca per codice, descrizione o cliente..."
+          filters={[
+            {
+              key: "status",
+              label: "Stato",
+              type: "select",
+              options: [
+                { label: "In corso", value: "in-progress" },
+                { label: "Completato", value: "completed" },
+                { label: "Sospeso", value: "suspended" },
+              ],
+            },
+            {
+              key: "activity",
+              label: "Attività",
+              type: "select", 
+              options: [
+                { label: "Installazione", value: "installation" },
+                { label: "Manutenzione", value: "maintenance" },
+                { label: "Riparazione", value: "repair" },
+              ],
+            },
+            {
+              key: "employee",
+              label: "Dipendente",
+              type: "select",
+              options: [
+                { label: "Mario Rossi", value: "mario" },
+                { label: "Luigi Verdi", value: "luigi" },
+              ],
+            },
+          ]}
+          onExport={() => console.log("Export clicked")}
+        />
 
-          {/* Data Table */}
-          <DataTable
-            columns={columns}
-            data={mockData}
-            emptyState={{
-              title: "Nessun intervento trovato",
-              description: "Inizia creando il tuo primo intervento",
-              icon: <ClipboardList className="h-12 w-12" />,
-            }}
-            mobileCardRender={(intervention) => (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-sm">{intervention.code}</span>
-                  <div className="flex gap-2">
-                    {intervention.urgent && (
-                      <Badge variant="destructive" className="text-xs">Urgente</Badge>
-                    )}
-                    <Badge variant={intervention.status === "Completato" ? "default" : "secondary"} className="text-xs">
-                      {intervention.status}
-                    </Badge>
-                  </div>
-                </div>
-                <p className="font-medium">{intervention.description}</p>
-                <div className="text-sm text-muted-foreground">
-                  <p>Cliente: {intervention.client}</p>
-                  <p>Attività: {intervention.activity}</p>
-                  <p>Dipendente: {intervention.employee}</p>
-                  <p>Durata: {intervention.duration}</p>
+        {/* Data Table */}
+        <DataTable
+          columns={columns}
+          data={mockData}
+          emptyState={{
+            title: "Nessun intervento trovato",
+            description: "Inizia creando il tuo primo intervento",
+            icon: <ClipboardList className="h-12 w-12" />,
+          }}
+          mobileCardRender={(intervention) => (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-sm">{intervention.code}</span>
+                <div className="flex gap-2">
+                  {intervention.urgent && (
+                    <Badge variant="destructive" className="text-xs">Urgente</Badge>
+                  )}
+                  <Badge variant={intervention.status === "Completato" ? "default" : "secondary"} className="text-xs">
+                    {intervention.status}
+                  </Badge>
                 </div>
               </div>
-            )}
-            className="border-0 shadow-none"
-          />
-        </div>
+              <p className="font-medium">{intervention.description}</p>
+              <div className="text-sm text-muted-foreground">
+                <p>Cliente: {intervention.client}</p>
+                <p>Attività: {intervention.activity}</p>
+                <p>Dipendente: {intervention.employee}</p>
+                <p>Durata: {intervention.duration}</p>
+              </div>
+            </div>
+          )}
+        />
       </div>
     </LayoutNew>
   )
