@@ -20,6 +20,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface Intervention {
   id: string
@@ -115,27 +125,74 @@ const mockData: Intervention[] = [
 
 export default function InterventionsPage() {
   const [globalFilter, setGlobalFilter] = React.useState("")
+  const [editingIntervention, setEditingIntervention] = React.useState<Intervention | null>(null)
+  const [deletingIntervention, setDeletingIntervention] = React.useState<Intervention | null>(null)
+  const [statusFilter, setStatusFilter] = React.useState("")
+  const [employeeFilter, setEmployeeFilter] = React.useState("")
+  const [urgencyFilter, setUrgencyFilter] = React.useState("")
+  const [activityFilter, setActivityFilter] = React.useState("")
+  const [clientFilter, setClientFilter] = React.useState("")
 
   const filteredData = React.useMemo(() => {
-    if (!globalFilter) return mockData
-    
-    const searchTerm = globalFilter.toLowerCase()
-    return mockData.filter(intervention => 
-      intervention.code.toLowerCase().includes(searchTerm) ||
-      intervention.description.toLowerCase().includes(searchTerm) ||
-      intervention.client.toLowerCase().includes(searchTerm) ||
-      (intervention.notes && intervention.notes.toLowerCase().includes(searchTerm))
-    )
-  }, [globalFilter])
+    let filtered = mockData
+
+    // Filtro testuale
+    if (globalFilter) {
+      const searchTerm = globalFilter.toLowerCase()
+      filtered = filtered.filter(intervention => 
+        intervention.code.toLowerCase().includes(searchTerm) ||
+        intervention.description.toLowerCase().includes(searchTerm) ||
+        intervention.client.toLowerCase().includes(searchTerm) ||
+        (intervention.notes && intervention.notes.toLowerCase().includes(searchTerm))
+      )
+    }
+
+    // Filtro stato
+    if (statusFilter) {
+      filtered = filtered.filter(intervention => intervention.status === statusFilter)
+    }
+
+    // Filtro dipendente
+    if (employeeFilter) {
+      filtered = filtered.filter(intervention => intervention.employee === employeeFilter)
+    }
+
+    // Filtro urgenza
+    if (urgencyFilter) {
+      if (urgencyFilter === "urgent") {
+        filtered = filtered.filter(intervention => intervention.urgent)
+      } else if (urgencyFilter === "normal") {
+        filtered = filtered.filter(intervention => !intervention.urgent)
+      }
+    }
+
+    // Filtro attività
+    if (activityFilter) {
+      filtered = filtered.filter(intervention => intervention.activity === activityFilter)
+    }
+
+    // Filtro cliente
+    if (clientFilter) {
+      filtered = filtered.filter(intervention => intervention.client === clientFilter)
+    }
+
+    return filtered
+  }, [globalFilter, statusFilter, employeeFilter, urgencyFilter, activityFilter, clientFilter])
 
   const handleEditIntervention = (intervention: Intervention) => {
-    console.log("Modifica intervento:", intervention.code)
-    // Qui si aprirà il form di modifica
+    setEditingIntervention(intervention)
   }
 
   const handleDeleteIntervention = (intervention: Intervention) => {
-    console.log("Elimina intervento:", intervention.code)
-    // Qui si aprirà una conferma di eliminazione
+    setDeletingIntervention(intervention)
+  }
+
+  const confirmDelete = () => {
+    if (deletingIntervention) {
+      console.log("Eliminando intervento:", deletingIntervention.code)
+      // Qui implementeresti l'eliminazione reale
+      setDeletingIntervention(null)
+    }
   }
 
   const columns: ColumnDef<Intervention>[] = [
@@ -224,8 +281,8 @@ export default function InterventionsPage() {
           variant="default" 
           size="sm"
           avatar={
-            <Avatar className="w-6 h-6">
-              <AvatarFallback className={`text-xs text-white font-semibold ${getAvatarColor(employee)}`}>
+            <Avatar className="w-5 h-5">
+              <AvatarFallback className={`text-xs text-white font-medium ${getAvatarColor(employee)}`}>
                 {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -381,25 +438,65 @@ export default function InterventionsPage() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           </div>
           
-          <Select>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-32">
               <SelectValue placeholder="Stato" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="in-progress">In corso</SelectItem>
-              <SelectItem value="completed">Completato</SelectItem>
-              <SelectItem value="suspended">Sospeso</SelectItem>
+              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="In corso">In corso</SelectItem>
+              <SelectItem value="Completato">Completato</SelectItem>
+              <SelectItem value="Programmato">Programmato</SelectItem>
+              <SelectItem value="Sospeso">Sospeso</SelectItem>
             </SelectContent>
           </Select>
           
+          <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="Urgenza" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="urgent">Urgenti</SelectItem>
+              <SelectItem value="normal">Normali</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={activityFilter} onValueChange={setActivityFilter}>
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder="Attività" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Tutte</SelectItem>
+              <SelectItem value="Installazione">Installazione</SelectItem>
+              <SelectItem value="Manutenzione">Manutenzione</SelectItem>
+              <SelectItem value="Riparazione">Riparazione</SelectItem>
+              <SelectItem value="Consulenza">Consulenza</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={clientFilter} onValueChange={setClientFilter}>
+            <SelectTrigger className="w-44">
+              <SelectValue placeholder="Cliente" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="Azienda ABC S.r.l.">Azienda ABC S.r.l.</SelectItem>
+              <SelectItem value="Studio Legale XYZ">Studio Legale XYZ</SelectItem>
+              <SelectItem value="Farmacia Centrale">Farmacia Centrale</SelectItem>
+              <SelectItem value="Negozio Elettronica">Negozio Elettronica</SelectItem>
+            </SelectContent>
+          </Select>
           
-          <Select>
+          <Select value={employeeFilter} onValueChange={setEmployeeFilter}>
             <SelectTrigger className="w-40">
               <SelectValue placeholder="Dipendente" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="mario">Mario Rossi</SelectItem>
-              <SelectItem value="luigi">Luigi Verdi</SelectItem>
+              <SelectItem value="">Tutti</SelectItem>
+              <SelectItem value="Mario Rossi">Mario Rossi</SelectItem>
+              <SelectItem value="Luigi Verdi">Luigi Verdi</SelectItem>
+              <SelectItem value="Anna Bianchi">Anna Bianchi</SelectItem>
             </SelectContent>
           </Select>
           
@@ -444,6 +541,57 @@ export default function InterventionsPage() {
           )}
         />
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deletingIntervention} onOpenChange={() => setDeletingIntervention(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Conferma Eliminazione</AlertDialogTitle>
+            <AlertDialogDescription>
+              Sei sicuro di voler eliminare l'intervento <strong>{deletingIntervention?.code}</strong>?
+              <br />
+              <span className="text-sm text-muted-foreground mt-2 block">
+                {deletingIntervention?.description}
+              </span>
+              <br />
+              Questa azione non può essere annullata.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annulla</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Elimina
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Edit Modal - For now just shows console log */}
+      {editingIntervention && (
+        <AlertDialog open={!!editingIntervention} onOpenChange={() => setEditingIntervention(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Modifica Intervento</AlertDialogTitle>
+              <AlertDialogDescription>
+                Modifica dell'intervento <strong>{editingIntervention.code}</strong>
+                <br />
+                <span className="text-sm text-muted-foreground mt-2 block">
+                  Funzionalità in sviluppo - per ora mostra solo un messaggio in console
+                </span>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Chiudi</AlertDialogCancel>
+              <AlertDialogAction onClick={() => {
+                console.log("Modifica intervento:", editingIntervention)
+                setEditingIntervention(null)
+              }}>
+                Conferma (Demo)
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </LayoutNew>
   )
 }
