@@ -113,7 +113,32 @@ const mockData: Intervention[] = [
   }
 ]
 
-const columns: ColumnDef<Intervention>[] = [
+export default function InterventionsPage() {
+  const [globalFilter, setGlobalFilter] = React.useState("")
+
+  const filteredData = React.useMemo(() => {
+    if (!globalFilter) return mockData
+    
+    const searchTerm = globalFilter.toLowerCase()
+    return mockData.filter(intervention => 
+      intervention.code.toLowerCase().includes(searchTerm) ||
+      intervention.description.toLowerCase().includes(searchTerm) ||
+      intervention.client.toLowerCase().includes(searchTerm) ||
+      (intervention.notes && intervention.notes.toLowerCase().includes(searchTerm))
+    )
+  }, [globalFilter])
+
+  const handleEditIntervention = (intervention: Intervention) => {
+    console.log("Modifica intervento:", intervention.code)
+    // Qui si aprirà il form di modifica
+  }
+
+  const handleDeleteIntervention = (intervention: Intervention) => {
+    console.log("Elimina intervento:", intervention.code)
+    // Qui si aprirà una conferma di eliminazione
+  }
+
+  const columns: ColumnDef<Intervention>[] = [
   {
     accessorKey: "code",
     header: () => (
@@ -185,13 +210,22 @@ const columns: ColumnDef<Intervention>[] = [
     header: "Dipendente",
     cell: ({ row }) => {
       const employee = row.getValue("employee") as string
+      const getAvatarColor = (name: string) => {
+        const colors = [
+          "bg-blue-600", "bg-green-600", "bg-purple-600", "bg-orange-600", 
+          "bg-pink-600", "bg-indigo-600", "bg-teal-600", "bg-red-600"
+        ]
+        const index = name.length % colors.length
+        return colors[index]
+      }
+      
       return (
         <Pill 
           variant="default" 
           size="sm"
           avatar={
-            <Avatar className="w-4 h-4">
-              <AvatarFallback className="text-xs bg-gray-500 text-white">
+            <Avatar className="w-6 h-6">
+              <AvatarFallback className={`text-xs text-white font-semibold ${getAvatarColor(employee)}`}>
                 {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -238,11 +272,14 @@ const columns: ColumnDef<Intervention>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleEditIntervention(row.original)}>
             <Edit className="h-4 w-4 mr-2" />
             Modifica
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-destructive">
+          <DropdownMenuItem 
+            className="text-destructive"
+            onClick={() => handleDeleteIntervention(row.original)}
+          >
             <Trash2 className="h-4 w-4 mr-2" />
             Elimina
           </DropdownMenuItem>
@@ -252,21 +289,6 @@ const columns: ColumnDef<Intervention>[] = [
     size: 80,
   },
 ]
-
-export default function InterventionsPage() {
-  const [globalFilter, setGlobalFilter] = React.useState("")
-
-  const filteredData = React.useMemo(() => {
-    if (!globalFilter) return mockData
-    
-    const searchTerm = globalFilter.toLowerCase()
-    return mockData.filter(intervention => 
-      intervention.code.toLowerCase().includes(searchTerm) ||
-      intervention.description.toLowerCase().includes(searchTerm) ||
-      intervention.client.toLowerCase().includes(searchTerm) ||
-      (intervention.notes && intervention.notes.toLowerCase().includes(searchTerm))
-    )
-  }, [globalFilter])
 
   return (
     <LayoutNew>
