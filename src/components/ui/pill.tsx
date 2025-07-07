@@ -14,11 +14,11 @@ interface PillProps {
 const Pill = React.forwardRef<HTMLDivElement, PillProps>(
   ({ children, variant = "default", size = "md", className, avatar, status, statusColor, ...props }, ref) => {
     const variants = {
-      default: "bg-transparent text-gray-600 border-gray-300",
-      success: "bg-transparent text-green-600 border-green-300",
-      error: "bg-transparent text-red-600 border-red-300", 
-      warning: "bg-transparent text-orange-600 border-orange-300",
-      info: "bg-transparent text-blue-600 border-blue-300"
+      default: "bg-transparent border-[oklch(26%_0_0)] text-[oklch(72%_0_0)]",
+      success: "bg-transparent border-[oklch(26%_0_0)] text-[oklch(72%_0_0)]",
+      error: "bg-transparent border-[oklch(26%_0_0)] text-[oklch(72%_0_0)]", 
+      warning: "bg-transparent border-[oklch(26%_0_0)] text-[oklch(72%_0_0)]",
+      info: "bg-transparent border-[oklch(26%_0_0)] text-[oklch(72%_0_0)]"
     }
 
     const sizes = {
