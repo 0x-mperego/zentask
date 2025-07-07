@@ -132,6 +132,8 @@ export default function InterventionsPage() {
   const [urgencyFilter, setUrgencyFilter] = React.useState("all")
   const [activityFilter, setActivityFilter] = React.useState("all")
   const [clientFilter, setClientFilter] = React.useState("all")
+  const [dateFromFilter, setDateFromFilter] = React.useState("")
+  const [dateToFilter, setDateToFilter] = React.useState("")
 
   const filteredData = React.useMemo(() => {
     let filtered = mockData
@@ -176,8 +178,18 @@ export default function InterventionsPage() {
       filtered = filtered.filter(intervention => intervention.client === clientFilter)
     }
 
+    // Filtro data inizio
+    if (dateFromFilter) {
+      filtered = filtered.filter(intervention => intervention.startDate >= dateFromFilter)
+    }
+
+    // Filtro data fine
+    if (dateToFilter) {
+      filtered = filtered.filter(intervention => intervention.startDate <= dateToFilter)
+    }
+
     return filtered
-  }, [globalFilter, statusFilter, employeeFilter, urgencyFilter, activityFilter, clientFilter])
+  }, [globalFilter, statusFilter, employeeFilter, urgencyFilter, activityFilter, clientFilter, dateFromFilter, dateToFilter])
 
   const handleEditIntervention = (intervention: Intervention) => {
     setEditingIntervention(intervention)
@@ -320,7 +332,7 @@ export default function InterventionsPage() {
   },
   {
     id: "actions",
-    header: "Azioni",
+    header: "",
     cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -439,11 +451,11 @@ export default function InterventionsPage() {
           </div>
           
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Stato" />
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder={statusFilter === "all" ? "Tutti gli stati" : statusFilter} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tutti</SelectItem>
+              <SelectItem value="all">Tutti gli stati</SelectItem>
               <SelectItem value="In corso">In corso</SelectItem>
               <SelectItem value="Completato">Completato</SelectItem>
               <SelectItem value="Programmato">Programmato</SelectItem>
@@ -453,21 +465,21 @@ export default function InterventionsPage() {
           
           <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
             <SelectTrigger className="w-32">
-              <SelectValue placeholder="Urgenza" />
+              <SelectValue placeholder={urgencyFilter === "all" ? "Urgenza" : urgencyFilter === "urgent" ? "Urgenti" : "Normali"} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tutti</SelectItem>
-              <SelectItem value="urgent">Urgenti</SelectItem>
-              <SelectItem value="normal">Normali</SelectItem>
+              <SelectItem value="all">Tutte urgenze</SelectItem>
+              <SelectItem value="urgent">Solo urgenti</SelectItem>
+              <SelectItem value="normal">Solo normali</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={activityFilter} onValueChange={setActivityFilter}>
             <SelectTrigger className="w-36">
-              <SelectValue placeholder="Attività" />
+              <SelectValue placeholder={activityFilter === "all" ? "Tutte attività" : activityFilter} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tutte</SelectItem>
+              <SelectItem value="all">Tutte le attività</SelectItem>
               <SelectItem value="Installazione">Installazione</SelectItem>
               <SelectItem value="Manutenzione">Manutenzione</SelectItem>
               <SelectItem value="Riparazione">Riparazione</SelectItem>
@@ -477,10 +489,10 @@ export default function InterventionsPage() {
 
           <Select value={clientFilter} onValueChange={setClientFilter}>
             <SelectTrigger className="w-44">
-              <SelectValue placeholder="Cliente" />
+              <SelectValue placeholder={clientFilter === "all" ? "Tutti i clienti" : clientFilter} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tutti</SelectItem>
+              <SelectItem value="all">Tutti i clienti</SelectItem>
               <SelectItem value="Azienda ABC S.r.l.">Azienda ABC S.r.l.</SelectItem>
               <SelectItem value="Studio Legale XYZ">Studio Legale XYZ</SelectItem>
               <SelectItem value="Farmacia Centrale">Farmacia Centrale</SelectItem>
@@ -490,15 +502,31 @@ export default function InterventionsPage() {
           
           <Select value={employeeFilter} onValueChange={setEmployeeFilter}>
             <SelectTrigger className="w-40">
-              <SelectValue placeholder="Dipendente" />
+              <SelectValue placeholder={employeeFilter === "all" ? "Tutti dipendenti" : employeeFilter} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tutti</SelectItem>
+              <SelectItem value="all">Tutti i dipendenti</SelectItem>
               <SelectItem value="Mario Rossi">Mario Rossi</SelectItem>
               <SelectItem value="Luigi Verdi">Luigi Verdi</SelectItem>
               <SelectItem value="Anna Bianchi">Anna Bianchi</SelectItem>
             </SelectContent>
           </Select>
+
+          <Input
+            type="date"
+            placeholder="Data da"
+            value={dateFromFilter}
+            onChange={(e) => setDateFromFilter(e.target.value)}
+            className="w-36"
+          />
+
+          <Input
+            type="date"
+            placeholder="Data a"
+            value={dateToFilter}
+            onChange={(e) => setDateToFilter(e.target.value)}
+            className="w-36"
+          />
           
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
