@@ -119,7 +119,7 @@ const columns: ColumnDef<Intervention>[] = [
       const intervention = row.original
       return (
         <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${intervention.urgent ? 'bg-red-500' : 'bg-gray-300'}`} />
+          {intervention.urgent && <div className="w-2 h-2 rounded-full bg-red-500" />}
           <div className="font-mono text-sm text-muted-foreground">{row.getValue("code")}</div>
         </div>
       )
@@ -129,9 +129,25 @@ const columns: ColumnDef<Intervention>[] = [
   {
     accessorKey: "description",
     header: "Descrizione",
-    cell: ({ row }) => (
-      <div className="max-w-[400px] truncate font-medium">{row.getValue("description")}</div>
-    ),
+    cell: ({ row }) => {
+      const intervention = row.original
+      const activityColors = {
+        "Installazione": "bg-blue-500",
+        "Manutenzione": "bg-green-500", 
+        "Riparazione": "bg-orange-500",
+        "Consulenza": "bg-purple-500"
+      }
+      return (
+        <div className="space-y-1">
+          <div className="font-medium truncate">{row.getValue("description")}</div>
+          <div className="flex items-center gap-1 bg-gray-50 rounded-md px-2 py-1 w-fit">
+            <div className={`w-2 h-2 rounded-full ${activityColors[intervention.activity] || 'bg-gray-500'}`} />
+            <span className="text-xs text-gray-600">{intervention.activity}</span>
+          </div>
+        </div>
+      )
+    },
+    size: 350,
   },
   {
     accessorKey: "client",
@@ -139,6 +155,7 @@ const columns: ColumnDef<Intervention>[] = [
     cell: ({ row }) => (
       <div className="font-medium">{row.getValue("client")}</div>
     ),
+    size: 180,
   },
   {
     accessorKey: "activity", 
@@ -146,6 +163,7 @@ const columns: ColumnDef<Intervention>[] = [
     cell: ({ row }) => (
       <div className="text-sm">{row.getValue("activity")}</div>
     ),
+    size: 120,
   },
   {
     accessorKey: "status",
@@ -158,6 +176,7 @@ const columns: ColumnDef<Intervention>[] = [
         </Badge>
       )
     },
+    size: 120,
   },
   {
     accessorKey: "employee",
@@ -165,6 +184,7 @@ const columns: ColumnDef<Intervention>[] = [
     cell: ({ row }) => (
       <div className="text-sm">{row.getValue("employee")}</div>
     ),
+    size: 130,
   },
   {
     accessorKey: "startDate",
@@ -180,6 +200,7 @@ const columns: ColumnDef<Intervention>[] = [
         <div className="text-sm text-muted-foreground">{formattedDate}</div>
       )
     },
+    size: 110,
   },
   {
     accessorKey: "duration",
@@ -187,6 +208,7 @@ const columns: ColumnDef<Intervention>[] = [
     cell: ({ row }) => (
       <div className="text-sm font-mono">{row.getValue("duration")}</div>
     ),
+    size: 100,
   },
   {
     id: "actions",
