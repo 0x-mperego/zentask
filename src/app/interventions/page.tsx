@@ -2,7 +2,6 @@
 
 import { LayoutNew } from "@/components/layout-new"
 import { DataTable } from "@/components/data-table"
-import { FilterToolbar } from "@/components/filter-toolbar"
 import { FormSheet, useFormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +10,13 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { ColumnDef } from "@tanstack/react-table"
-import { Plus, MoreHorizontal, ClipboardList } from "lucide-react"
+import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Search, Download } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface Intervention {
   id: string
@@ -101,12 +106,12 @@ const mockData: Intervention[] = [
 
 const columns: ColumnDef<Intervention>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "code",
     header: "ID",
     cell: ({ row }) => (
-      <div className="font-mono text-sm text-muted-foreground">{row.getValue("id")}</div>
+      <div className="font-mono text-sm text-muted-foreground">{row.getValue("code")}</div>
     ),
-    size: 60,
+    size: 100,
   },
   {
     accessorKey: "description",
@@ -174,11 +179,23 @@ const columns: ColumnDef<Intervention>[] = [
     id: "actions",
     header: "Azioni",
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem>
+            <Edit className="h-4 w-4 mr-2" />
+            Modifica
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-destructive">
+            <Trash2 className="h-4 w-4 mr-2" />
+            Elimina
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     ),
     size: 80,
   },
@@ -264,44 +281,57 @@ export default function InterventionsPage() {
           </FormSheet>
         </div>
 
-        {/* Filters */}
-        <FilterToolbar
-          searchPlaceholder="Cerca per codice, descrizione o cliente..."
-          filters={[
-            {
-              key: "status",
-              label: "Stato",
-              type: "select",
-              options: [
-                { label: "In corso", value: "in-progress" },
-                { label: "Completato", value: "completed" },
-                { label: "Sospeso", value: "suspended" },
-              ],
-            },
-            {
-              key: "activity",
-              label: "Attività",
-              type: "select", 
-              options: [
-                { label: "Installazione", value: "installation" },
-                { label: "Manutenzione", value: "maintenance" },
-                { label: "Riparazione", value: "repair" },
-              ],
-            },
-            {
-              key: "employee",
-              label: "Dipendente",
-              type: "select",
-              options: [
-                { label: "Mario Rossi", value: "mario" },
-                { label: "Luigi Verdi", value: "luigi" },
-              ],
-            },
-          ]}
-          onExport={() => console.log("Export clicked")}
-        />
-
-        {/* Data Table */}
+        {/* Inline Filters */}
+        <div className="flex items-center gap-4">
+          <div className="relative flex-1">
+            <Input
+              placeholder="Cerca per codice, descrizione o cliente..."
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          </div>
+          
+          <Select>
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="Stato" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="in-progress">In corso</SelectItem>
+              <SelectItem value="completed">Completato</SelectItem>
+              <SelectItem value="suspended">Sospeso</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select>
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="Attività" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="installation">Installazione</SelectItem>
+              <SelectItem value="maintenance">Manutenzione</SelectItem>
+              <SelectItem value="repair">Riparazione</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select>
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="Dipendente" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="mario">Mario Rossi</SelectItem>
+              <SelectItem value="luigi">Luigi Verdi</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Button variant="outline">
+            <Download className="h-4 w-4 mr-2" />
+            Esporta Excel
+          </Button>
+        </div>
+      </div>
+      
+      {/* Full-width table section */}
+      <div className="-mx-4">
         <DataTable
           columns={columns}
           data={mockData}
