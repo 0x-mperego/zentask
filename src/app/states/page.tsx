@@ -64,7 +64,7 @@ const columns: ColumnDef<StateType>[] = [
     accessorKey: "name",
     header: "Nome Stato",
     cell: ({ row }) => (
-      <div className="font-medium text-white">{row.getValue("name")}</div>
+      <div className="font-medium">{row.getValue("name")}</div>
     ),
     size: 200,
     enableGlobalFilter: true,
@@ -84,7 +84,7 @@ const columns: ColumnDef<StateType>[] = [
             className="h-4 w-4 rounded-full border" 
             style={{ backgroundColor: color }}
           />
-          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
+          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium bg-transparent">
             {name}
           </span>
         </div>

@@ -60,7 +60,7 @@ export default function ActivitiesPage() {
       accessorKey: "name",
       header: "Nome Attività",
       cell: ({ row }) => (
-        <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
+        <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium bg-transparent">
           {row.getValue("name")}
         </span>
       ),

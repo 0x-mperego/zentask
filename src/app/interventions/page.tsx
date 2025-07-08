@@ -262,7 +262,7 @@ export default function InterventionsPage() {
             <div className="w-2 h-2 rounded-full flex-shrink-0">
               {intervention.urgent && <div className="w-2 h-2 rounded-full bg-red-500" />}
             </div>
-            <div className="text-sm text-white">{row.getValue("code")}</div>
+            <div className="text-sm">{row.getValue("code")}</div>
           </div>
         )
       },
@@ -317,10 +317,10 @@ export default function InterventionsPage() {
         
         return (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
+            <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium bg-transparent">
               {intervention.activity}
             </span>
-            <span className="font-medium text-sm truncate text-white">{row.getValue("description")}</span>
+            <span className="font-medium text-sm truncate">{row.getValue("description")}</span>
           </div>
         )
       },
@@ -334,7 +334,7 @@ export default function InterventionsPage() {
       accessorKey: "client",
       header: "Cliente",
       cell: ({ row }) => (
-        <div className="font-medium text-sm text-white">{row.getValue("client")}</div>
+        <div className="font-medium text-sm">{row.getValue("client")}</div>
       ),
       size: 200,
       enableGlobalFilter: true,
@@ -356,7 +356,7 @@ export default function InterventionsPage() {
         const intervention = row.original
         
         return (
-          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
+          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium bg-transparent">
             {status}
           </span>
         )
@@ -379,7 +379,7 @@ export default function InterventionsPage() {
         const employee = row.getValue("employee") as string
         
         return (
-          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
+          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium bg-transparent">
             {employee}
           </span>
         )
@@ -406,7 +406,7 @@ export default function InterventionsPage() {
           year: 'numeric'
         })
         return (
-          <div className="text-sm text-white">{formattedDate}</div>
+          <div className="text-sm">{formattedDate}</div>
         )
       },
       size: 120,
@@ -418,7 +418,7 @@ export default function InterventionsPage() {
       accessorKey: "duration",
       header: "Durata",
       cell: ({ row }) => (
-        <div className="text-sm text-white">{row.getValue("duration")}</div>
+        <div className="text-sm">{row.getValue("duration")}</div>
       ),
       size: 110,
       meta: {
