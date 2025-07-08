@@ -169,22 +169,32 @@
     background-color: white !important;
   }
   
-  /* Force calendar range highlighting */
-  .rdp-day_range_middle,
-  .rdp-day_range_middle .rdp-button_reset {
+  /* Force calendar range highlighting - target specific data attributes */
+  button[data-range-middle="true"] {
     background-color: hsl(var(--accent)) !important;
     color: hsl(var(--accent-foreground)) !important;
   }
   
-  .rdp-day_range_start,
-  .rdp-day_range_start .rdp-button_reset {
+  button[data-range-start="true"] {
     background-color: hsl(var(--primary)) !important;
     color: hsl(var(--primary-foreground)) !important;
   }
   
-  .rdp-day_range_end,
-  .rdp-day_range_end .rdp-button_reset {
+  button[data-range-end="true"] {
     background-color: hsl(var(--primary)) !important;
     color: hsl(var(--primary-foreground)) !important;
+  }
+  
+  /* Alternative targeting for range cells */
+  .rdp-day[data-range-middle] {
+    background-color: hsl(var(--accent)) !important;
+  }
+  
+  .rdp-day[data-range-start] {
+    background-color: hsl(var(--primary)) !important;
+  }
+  
+  .rdp-day[data-range-end] {
+    background-color: hsl(var(--primary)) !important;
   }
 }

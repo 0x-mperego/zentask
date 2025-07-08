@@ -670,7 +670,6 @@ export default function InterventionsPage() {
                           <SelectItem key={employee.value} value={employee.value}>
                             <div className="flex items-center gap-2">
                               <Avatar className="h-6 w-6">
-                                <AvatarImage src={`/avatars/${employee.value}.jpg`} />
                                 <AvatarFallback className="text-xs">
                                   {employee.label.split(' ').map(n => n[0]).join('')}
                                 </AvatarFallback>
