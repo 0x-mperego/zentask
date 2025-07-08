@@ -206,17 +206,14 @@ const employeeSelectOptions: EmployeeOption[] = [
   {
     label: "Anna Bianchi",
     value: "anna-bianchi",
-    avatar: "/avatars/anna-bianchi.jpg",
   },
   {
     label: "Luigi Verdi",
     value: "luigi-verdi",
-    avatar: "/avatars/luigi-verdi.jpg",
   },
   {
     label: "Mario Rossi",
     value: "mario-rossi",
-    avatar: "/avatars/mario-rossi.jpg",
   },
 ]
 
@@ -303,11 +300,6 @@ export default function InterventionsPage() {
   })
   const [rowSelection, setRowSelection] = React.useState({})
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>()
-  
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    console.log("Date range changed:", range)
-    setDateRange(range)
-  }
   const [isUrgent, setIsUrgent] = React.useState(false)
   const [selectedActivity, setSelectedActivity] = React.useState<string>("")
   const [selectedClient, setSelectedClient] = React.useState<string>("")
@@ -717,7 +709,7 @@ export default function InterventionsPage() {
                         mode="range"
                         defaultMonth={dateRange?.from}
                         selected={dateRange}
-                        onSelect={handleDateRangeChange}
+                        onSelect={setDateRange}
                         numberOfMonths={1}
                         showOutsideDays={false}
                       />
