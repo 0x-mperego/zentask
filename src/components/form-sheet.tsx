@@ -105,20 +105,8 @@ export function FormSheet({
         }}
       >
         {/* Header */}
-        <SheetHeader className="space-y-2">
-          <div className="flex items-center justify-between">
-            <SheetTitle className="text-left">{title}</SheetTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={handleCancel}
-              disabled={loading}
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">Chiudi</span>
-            </Button>
-          </div>
+        <SheetHeader className="space-y-2 px-6 pt-6">
+          <SheetTitle className="text-left">{title}</SheetTitle>
           {description && (
             <SheetDescription className="text-left">
               {description}
@@ -131,16 +119,16 @@ export function FormSheet({
         {/* Form Content */}
         <form 
           onSubmit={handleSubmit}
-          className="flex flex-1 flex-col"
+          className="flex flex-1 flex-col px-6"
         >
-          <div className="flex-1 space-y-6 overflow-y-auto pr-2">
+          <div className="flex-1 space-y-6 overflow-y-auto">
             {children}
           </div>
 
           <Separator className="my-4" />
 
           {/* Footer */}
-          <SheetFooter className="flex-shrink-0">
+          <SheetFooter className="flex-shrink-0 pb-6">
             <div className="flex w-full gap-2 sm:justify-end">
               <Button
                 type="button"

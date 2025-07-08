@@ -25,6 +25,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FileUpload } from "@/components/file-upload"
 import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Download, Circle, Clock, CheckCircle2, AlertCircle, Users, Building2, Settings, Zap } from "lucide-react"
 import {
   DropdownMenu,
@@ -514,108 +516,141 @@ export default function InterventionsPage() {
                 // Qui implementeremo la logica di salvataggio
               }}
             >
-            <div className="space-y-6">
-              {/* Cliente e Attività */}
-              <div className="grid grid-cols-2 gap-4">
+            <Tabs defaultValue="dettagli" className="h-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="dettagli">Dettagli</TabsTrigger>
+                <TabsTrigger value="log">Log</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="dettagli" className="space-y-6 mt-6">
+                {/* Descrizione */}
                 <div className="space-y-2">
-                  <Label htmlFor="client">Cliente *</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleziona cliente" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="azienda-abc">Azienda ABC S.r.l.</SelectItem>
-                      <SelectItem value="studio-xyz">Studio Legale XYZ</SelectItem>
-                      <SelectItem value="farmacia">Farmacia Centrale</SelectItem>
-                      <SelectItem value="negozio">Negozio Elettronica</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="activity">Attività *</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleziona attività" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="consulenza">Consulenza</SelectItem>
-                      <SelectItem value="installazione">Installazione</SelectItem>
-                      <SelectItem value="manutenzione">Manutenzione</SelectItem>
-                      <SelectItem value="riparazione">Riparazione</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Descrizione */}
-              <div className="space-y-2">
-                <Label htmlFor="description">Descrizione *</Label>
-                <Input placeholder="Breve descrizione dell'intervento da eseguire" />
-              </div>
-
-              {/* Dipendente e Stato */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="employee">Dipendente *</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Assegna dipendente" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="anna-bianchi">Anna Bianchi</SelectItem>
-                      <SelectItem value="luigi-verdi">Luigi Verdi</SelectItem>
-                      <SelectItem value="mario-rossi">Mario Rossi</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="description">Descrizione *</Label>
+                  <Input placeholder="Breve descrizione dell'intervento" />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="status">Stato *</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Stato iniziale" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="programmato">Programmato</SelectItem>
-                      <SelectItem value="in-corso">In corso</SelectItem>
-                      <SelectItem value="completato">Completato</SelectItem>
-                      <SelectItem value="sospeso">Sospeso</SelectItem>
-                    </SelectContent>
-                  </Select>
+                {/* Attività e Cliente */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="activity">Attività *</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona attività" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="consulenza">Consulenza</SelectItem>
+                        <SelectItem value="installazione">Installazione</SelectItem>
+                        <SelectItem value="manutenzione">Manutenzione</SelectItem>
+                        <SelectItem value="riparazione">Riparazione</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="client">Cliente *</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona cliente" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="azienda-abc">Azienda ABC S.r.l.</SelectItem>
+                        <SelectItem value="studio-xyz">Studio Legale XYZ</SelectItem>
+                        <SelectItem value="farmacia">Farmacia Centrale</SelectItem>
+                        <SelectItem value="negozio">Negozio Elettronica</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-              </div>
 
-              {/* Data e Durata */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="startDate">Data Inizio *</Label>
-                  <Input type="date" defaultValue="2025-01-15" />
+                {/* Stato e Dipendente */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="status">Stato *</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona stato" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="programmato">Programmato</SelectItem>
+                        <SelectItem value="in-corso">In corso</SelectItem>
+                        <SelectItem value="completato">Completato</SelectItem>
+                        <SelectItem value="sospeso">Sospeso</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="employee">Dipendente *</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona dipendente" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="anna-bianchi">Anna Bianchi</SelectItem>
+                        <SelectItem value="luigi-verdi">Luigi Verdi</SelectItem>
+                        <SelectItem value="mario-rossi">Mario Rossi</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="duration">Durata Stimata</Label>
-                  <Input placeholder="es. 2h 30min, 1 giorno" />
+
+                {/* Urgenza */}
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="urgent" />
+                  <Label htmlFor="urgent" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Urgente
+                  </Label>
                 </div>
-              </div>
 
-              {/* Urgenza */}
-              <div className="flex items-center space-x-2">
-                <Checkbox id="urgent" />
-                <Label htmlFor="urgent" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Intervento urgente
-                </Label>
-              </div>
+                {/* Date Intervento e Durata */}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="startDate">Date Intervento *</Label>
+                    <Input type="date" defaultValue="2025-07-08" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Durata</Label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="hours" className="text-sm text-muted-foreground">Ore</Label>
+                        <Input type="number" min="0" max="23" defaultValue="0" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="minutes" className="text-sm text-muted-foreground">Minuti</Label>
+                        <Input type="number" min="0" max="59" defaultValue="0" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              {/* Note */}
-              <div className="space-y-2">
-                <Label htmlFor="notes">Note</Label>
-                <Textarea 
-                  placeholder="Note aggiuntive, dettagli tecnici o istruzioni speciali" 
-                  className="min-h-[80px]"
-                />
-              </div>
-            </div>
+                {/* Note */}
+                <div className="space-y-2">
+                  <Label htmlFor="notes">Note</Label>
+                  <Textarea 
+                    placeholder="Note aggiuntive, dettagli tecnici o commenti..." 
+                    className="min-h-[100px]"
+                  />
+                </div>
+
+                {/* Allegati */}
+                <div className="space-y-2">
+                  <Label>Allegati</Label>
+                  <FileUpload 
+                    maxFiles={5}
+                    maxSize={10 * 1024 * 1024}
+                    onFilesChange={(files) => console.log("Files uploaded:", files)}
+                  />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="log" className="space-y-4 mt-6">
+                <div className="text-center text-muted-foreground py-8">
+                  <p>Il log degli eventi sarà disponibile dopo la creazione dell'intervento.</p>
+                  <p className="text-sm mt-2">Qui verranno mostrati tutti i cambiamenti di stato, note e azioni eseguite.</p>
+                </div>
+              </TabsContent>
+            </Tabs>
           </FormSheet>
           </div>
         </div>
