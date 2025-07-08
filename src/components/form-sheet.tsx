@@ -37,7 +37,7 @@ const sizeClasses = {
   default: "max-w-md",
   lg: "max-w-lg", 
   xl: "max-w-xl",
-  "2xl": "max-w-7xl",
+  "2xl": "w-[30vw] max-w-none",
   full: "max-w-full",
 }
 
