@@ -168,4 +168,10 @@
   .urgency-switch[data-state="checked"] [data-state="checked"] {
     background-color: white !important;
   }
+  
+  /* Calendar range middle dates visibility fix for dark mode */
+  .dark [data-range-middle="true"] {
+    background-color: oklch(0.4 0 0) !important;
+    color: oklch(0.985 0 0) !important;
+  }
 }
