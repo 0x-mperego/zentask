@@ -320,9 +320,9 @@ export default function InterventionsPage() {
         
         return (
           <div className="flex items-center gap-2">
-            <Badge variant="secondary">
+            <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
               {intervention.activity}
-            </Badge>
+            </span>
             <span className="font-medium text-sm truncate">{row.getValue("description")}</span>
           </div>
         )
@@ -357,15 +357,15 @@ export default function InterventionsPage() {
         const status = row.getValue("status") as string
         const intervention = row.original
         
-        const variant = intervention.urgent ? "destructive" :
-          status === "Completato" ? "default" :
-          status === "In corso" ? "secondary" :
-          status === "Programmato" ? "outline" : "secondary"
+        const textColor = intervention.urgent ? "text-red-600" :
+          status === "Completato" ? "text-green-600" :
+          status === "In corso" ? "text-yellow-600" :
+          status === "Programmato" ? "text-blue-600" : "text-muted-foreground"
         
         return (
-          <Badge variant={variant}>
-            {status}
-          </Badge>
+          <span className={`inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium bg-transparent ${textColor}`}>
+            {intervention.urgent && "🔴 "}{status}
+          </span>
         )
       },
       size: 120,
@@ -391,9 +391,9 @@ export default function InterventionsPage() {
                 {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <Badge variant="secondary">
+            <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
               {employee}
-            </Badge>
+            </span>
           </div>
         )
       },
