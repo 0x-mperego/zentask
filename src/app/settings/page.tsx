@@ -50,7 +50,7 @@ export default function SettingsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Impostazioni Azienda</h1>
           <p className="text-muted-foreground">
-            Configura le impostazioni dell'azienda
+            Configura le impostazioni dell&apos;azienda
           </p>
         </div>
 
@@ -100,12 +100,8 @@ export default function SettingsPage() {
                 <Label>Logo Azienda</Label>
                 <FileUpload
                   accept="image/*"
-                  multiple={false}
                   maxFiles={1}
-                  placeholder={{
-                    title: "Carica il logo della tua azienda",
-                    description: "Formato supportato: PNG, JPG (max 2MB)"
-                  }}
+                  maxSize={2 * 1024 * 1024} // 2MB
                 />
               </div>
 

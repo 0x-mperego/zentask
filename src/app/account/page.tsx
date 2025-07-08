@@ -68,12 +68,8 @@ export default function AccountPage() {
                 <Label>Foto Profilo</Label>
                 <FileUpload
                   accept="image/*"
-                  multiple={false}
                   maxFiles={1}
-                  placeholder={{
-                    title: "Carica la tua foto profilo",
-                    description: "Formato supportato: PNG, JPG (max 1MB)"
-                  }}
+                  maxSize={1024 * 1024} // 1MB
                 />
               </div>
 
@@ -93,7 +89,7 @@ export default function AccountPage() {
                 Sicurezza
               </CardTitle>
               <CardDescription>
-                Cambia la tua password per mantenere l'account sicuro
+                Cambia la tua password per mantenere l&apos;account sicuro
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

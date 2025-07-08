@@ -646,7 +646,7 @@ export default function InterventionsPage() {
               
               <TabsContent value="log" className="space-y-4 mt-6 px-6">
                 <div className="text-center text-muted-foreground py-8">
-                  <p>Il log degli eventi sarà disponibile dopo la creazione dell'intervento.</p>
+                  <p>Il log degli eventi sarà disponibile dopo la creazione dell&apos;intervento.</p>
                   <p className="text-sm mt-2">Qui verranno mostrati tutti i cambiamenti di stato, note e azioni eseguite.</p>
                 </div>
               </TabsContent>
@@ -700,7 +700,7 @@ export default function InterventionsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Conferma Eliminazione</AlertDialogTitle>
             <AlertDialogDescription>
-              Sei sicuro di voler eliminare l'intervento <strong>{deletingIntervention?.code}</strong>?
+              Sei sicuro di voler eliminare l&apos;intervento <strong>{deletingIntervention?.code}</strong>?
               <br />
               <span className="text-sm text-muted-foreground mt-2 block">
                 {deletingIntervention?.description}
@@ -725,7 +725,7 @@ export default function InterventionsPage() {
             <AlertDialogHeader>
               <AlertDialogTitle>Modifica Intervento</AlertDialogTitle>
               <AlertDialogDescription>
-                Modifica dell'intervento <strong>{editingIntervention.code}</strong>
+                Modifica dell&apos;intervento <strong>{editingIntervention.code}</strong>
                 <br />
                 <span className="text-sm text-muted-foreground mt-2 block">
                   Funzionalità in sviluppo - per ora mostra solo un messaggio in console
