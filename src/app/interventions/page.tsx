@@ -28,7 +28,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/animate-ui/radix/switch"
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
-import { EmployeeSelect, type EmployeeOption } from "@/components/ui/employee-select"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -202,7 +201,7 @@ const clientComboboxOptions: ComboboxOption[] = [
   },
 ]
 
-const employeeSelectOptions: EmployeeOption[] = [
+const employeeSelectOptions = [
   {
     label: "Anna Bianchi",
     value: "anna-bianchi",
@@ -217,7 +216,7 @@ const employeeSelectOptions: EmployeeOption[] = [
   },
 ]
 
-const statusComboboxOptions: ComboboxOption[] = [
+const statusSelectOptions = [
   {
     label: "Programmato",
     value: "programmato",
@@ -644,26 +643,34 @@ export default function InterventionsPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="status">Stato *</Label>
-                    <Combobox
-                      options={statusComboboxOptions}
-                      value={selectedStatus}
-                      onValueChange={setSelectedStatus}
-                      placeholder="Seleziona stato"
-                      searchPlaceholder="Cerca stato..."
-                      emptyMessage="Nessuno stato trovato."
-                    />
+                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona stato" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {statusSelectOptions.map((status) => (
+                          <SelectItem key={status.value} value={status.value}>
+                            {status.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="employee">Dipendente *</Label>
-                    <EmployeeSelect
-                      options={employeeSelectOptions}
-                      value={selectedEmployee}
-                      onValueChange={setSelectedEmployee}
-                      placeholder="Seleziona dipendente"
-                      searchPlaceholder="Cerca dipendente..."
-                      emptyMessage="Nessun dipendente trovato."
-                    />
+                    <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona dipendente" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {employeeSelectOptions.map((employee) => (
+                          <SelectItem key={employee.value} value={employee.value}>
+                            {employee.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
