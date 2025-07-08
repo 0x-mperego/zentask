@@ -20,7 +20,6 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar"
 import { FormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Pill } from "@/components/ui/pill"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -281,6 +280,7 @@ export default function InterventionsPage() {
       cell: ({ row }) => null,
       enableColumnFilter: true,
       enableGlobalFilter: false,
+      enableHiding: false,
       accessorFn: (row) => row.urgent ? "true" : "false",
       filterFn: (row, id, value) => {
         const isUrgent = row.original.urgent
@@ -299,6 +299,7 @@ export default function InterventionsPage() {
       cell: ({ row }) => null,
       enableColumnFilter: true,
       enableGlobalFilter: false,
+      enableHiding: false,
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id))
       },
@@ -343,23 +344,15 @@ export default function InterventionsPage() {
       cell: ({ row }) => {
         const status = row.getValue("status") as string
         const intervention = row.original
-        const statusConfig: Record<string, { variant: "success" | "warning" | "info" | "error" | "default", color: string }> = {
-          "Completato": { variant: "success", color: "bg-green-500" },
-          "In corso": { variant: "warning", color: "bg-yellow-500" },
-          "Programmato": { variant: "info", color: "bg-blue-500" },
-          "Sospeso": { variant: "error", color: "bg-red-500" }
-        }
-        const config = statusConfig[status] || { variant: "default", color: "bg-gray-500" }
+        const statusVariant = intervention.urgent ? "destructive" : 
+          status === "Completato" ? "default" :
+          status === "In corso" ? "secondary" :
+          status === "Programmato" ? "outline" : "secondary"
         
         return (
-          <Pill 
-            variant={config.variant} 
-            size="sm" 
-            status 
-            statusColor={intervention.urgent ? "bg-red-500" : config.color}
-          >
+          <Badge variant={statusVariant} className="whitespace-nowrap">
             {status}
-          </Pill>
+          </Badge>
         )
       },
       size: 120,
@@ -387,19 +380,16 @@ export default function InterventionsPage() {
         }
         
         return (
-          <Pill 
-            variant="default" 
-            size="sm"
-            avatar={
-              <Avatar className="w-5 h-5">
-                <AvatarFallback className={`text-xs text-white font-medium ${getAvatarColor(employee)}`}>
-                  {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            }
-          >
-            {employee}
-          </Pill>
+          <div className="flex items-center gap-2">
+            <Avatar className="w-6 h-6">
+              <AvatarFallback className={`text-xs text-white font-medium ${getAvatarColor(employee)}`}>
+                {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <Badge variant="secondary" className="whitespace-nowrap">
+              {employee}
+            </Badge>
+          </div>
         )
       },
       size: 170,
@@ -499,6 +489,10 @@ export default function InterventionsPage() {
     initialState: {
       pagination: {
         pageSize: 10,
+      },
+      columnVisibility: {
+        urgent: false,
+        activity: false,
       },
     },
   })
