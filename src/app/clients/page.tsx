@@ -1,7 +1,7 @@
 "use client"
 
 import { LayoutNew } from "@/components/layout-new"
-import { DataTable } from "@/components/data-table"
+import { DataTable } from "@/components/data-table-old"
 import { FilterToolbar } from "@/components/filter-toolbar"
 import { FormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"

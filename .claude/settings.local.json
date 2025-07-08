@@ -7,7 +7,12 @@
       "Bash(git push:*)",
       "WebFetch(domain:www.kibo-ui.com)",
       "Bash(pnpm dlx:*)",
-      "WebFetch(domain:www.diceui.com)"
+      "WebFetch(domain:www.diceui.com)",
+      "Bash(pnpm dev:*)",
+      "Bash(git restore:*)",
+      "Bash(pnpm biome check:*)",
+      "Bash(pnpm build:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": []
   }
