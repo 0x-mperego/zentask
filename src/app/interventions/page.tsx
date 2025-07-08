@@ -229,7 +229,10 @@ export default function InterventionsPage() {
   const [deletingIntervention, setDeletingIntervention] = React.useState<Intervention | null>(null)
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+    urgent: false,
+    activity: false,
+  })
   const [rowSelection, setRowSelection] = React.useState({})
 
   const handleEditIntervention = (intervention: Intervention) => {
@@ -312,9 +315,28 @@ export default function InterventionsPage() {
     {
       accessorKey: "description",
       header: "Descrizione",
-      cell: ({ row }) => (
-        <div className="font-medium text-sm">{row.getValue("description")}</div>
-      ),
+      cell: ({ row }) => {
+        const intervention = row.original
+        const activityColors: Record<string, string> = {
+          "Installazione": "bg-blue-100 text-blue-800 border-blue-200",
+          "Manutenzione": "bg-green-100 text-green-800 border-green-200",
+          "Riparazione": "bg-orange-100 text-orange-800 border-orange-200",
+          "Consulenza": "bg-purple-100 text-purple-800 border-purple-200"
+        }
+        const colorClass = activityColors[intervention.activity] || "bg-gray-100 text-gray-800 border-gray-200"
+        
+        return (
+          <div className="flex items-center gap-2">
+            <Badge 
+              variant="outline" 
+              className={`whitespace-nowrap text-xs px-2 py-1 border ${colorClass}`}
+            >
+              {intervention.activity}
+            </Badge>
+            <span className="font-medium text-sm truncate">{row.getValue("description")}</span>
+          </div>
+        )
+      },
       size: 400,
       enableGlobalFilter: true,
       meta: {
@@ -344,13 +366,31 @@ export default function InterventionsPage() {
       cell: ({ row }) => {
         const status = row.getValue("status") as string
         const intervention = row.original
-        const statusVariant = intervention.urgent ? "destructive" : 
-          status === "Completato" ? "default" :
-          status === "In corso" ? "secondary" :
-          status === "Programmato" ? "outline" : "secondary"
+        
+        if (intervention.urgent) {
+          return (
+            <Badge 
+              variant="outline" 
+              className="whitespace-nowrap text-xs px-2 py-1 border bg-red-100 text-red-800 border-red-200"
+            >
+              🔴 {status}
+            </Badge>
+          )
+        }
+        
+        const statusColors: Record<string, string> = {
+          "Completato": "bg-green-100 text-green-800 border-green-200",
+          "In corso": "bg-yellow-100 text-yellow-800 border-yellow-200", 
+          "Programmato": "bg-blue-100 text-blue-800 border-blue-200",
+          "Sospeso": "bg-gray-100 text-gray-800 border-gray-200"
+        }
+        const colorClass = statusColors[status] || "bg-gray-100 text-gray-800 border-gray-200"
         
         return (
-          <Badge variant={statusVariant} className="whitespace-nowrap">
+          <Badge 
+            variant="outline" 
+            className={`whitespace-nowrap text-xs px-2 py-1 border ${colorClass}`}
+          >
             {status}
           </Badge>
         )
@@ -381,12 +421,15 @@ export default function InterventionsPage() {
         
         return (
           <div className="flex items-center gap-2">
-            <Avatar className="w-6 h-6">
+            <Avatar className="w-5 h-5">
               <AvatarFallback className={`text-xs text-white font-medium ${getAvatarColor(employee)}`}>
                 {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <Badge variant="secondary" className="whitespace-nowrap">
+            <Badge 
+              variant="outline" 
+              className="whitespace-nowrap text-xs px-2 py-1 border bg-slate-100 text-slate-800 border-slate-200"
+            >
               {employee}
             </Badge>
           </div>
