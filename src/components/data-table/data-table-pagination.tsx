@@ -27,7 +27,7 @@ export function DataTablePagination<TData>({
   pageSizeOptions = [10, 20, 30, 40, 50],
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className="flex items-center justify-between px-4">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getRowModel().rows.length} di{" "}
         {table.getFilteredRowModel().rows.length} elemento/i visualizzato/i.
