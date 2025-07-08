@@ -84,7 +84,7 @@ const columns: ColumnDef<Client>[] = [
     accessorKey: "name",
     header: "Nome/Ragione Sociale",
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("name")}</div>
+      <div className="font-medium text-white">{row.getValue("name")}</div>
     ),
     size: 250,
     enableGlobalFilter: true,
@@ -98,7 +98,7 @@ const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       const type = row.getValue("type") as string
       return (
-        <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
+        <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
           {type}
         </span>
       )
@@ -119,7 +119,7 @@ const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       const phone = row.getValue("phone") as string
       return phone ? (
-        <span className="font-mono text-sm">{phone}</span>
+        <span className="text-sm text-white">{phone}</span>
       ) : (
         <span className="text-muted-foreground text-sm">-</span>
       )
@@ -136,7 +136,7 @@ const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       const email = row.getValue("email") as string
       return email ? (
-        <span className="text-sm">{email}</span>
+        <span className="text-sm text-white">{email}</span>
       ) : (
         <span className="text-muted-foreground text-sm">-</span>
       )
@@ -153,7 +153,7 @@ const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       const notes = row.getValue("notes") as string
       return notes ? (
-        <div className="max-w-[200px] truncate text-sm">{notes}</div>
+        <div className="max-w-[200px] truncate text-sm text-white">{notes}</div>
       ) : (
         <span className="text-muted-foreground text-sm">-</span>
       )

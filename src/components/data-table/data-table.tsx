@@ -106,9 +106,9 @@ export function DataTable<TData>({
       ) : table.getRowModel().rows?.length ? (
         <>
           {/* Desktop Table */}
-          <div className="hidden md:block">
-            <div className="overflow-hidden rounded-md border">
-              <Table>
+          <div className="hidden md:block w-full">
+            <div className="overflow-hidden border rounded-none">
+              <Table className="w-full">
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>

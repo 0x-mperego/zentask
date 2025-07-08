@@ -135,7 +135,7 @@ const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original
       return (
-        <div className="font-medium">{user.firstName} {user.lastName}</div>
+        <div className="font-medium text-white">{user.firstName} {user.lastName}</div>
       )
     },
     accessorFn: (row) => `${row.firstName} ${row.lastName}`,
@@ -149,7 +149,7 @@ const columns: ColumnDef<User>[] = [
     accessorKey: "email",
     header: "Email",
     cell: ({ row }) => (
-      <div className="text-sm">{row.getValue("email")}</div>
+      <div className="text-sm text-white">{row.getValue("email")}</div>
     ),
     size: 250,
     enableGlobalFilter: true,
@@ -163,7 +163,7 @@ const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const role = row.getValue("role") as string
       return (
-        <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
+        <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
           {getRoleLabel(role)}
         </span>
       )

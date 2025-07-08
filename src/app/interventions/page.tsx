@@ -20,12 +20,11 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar"
 import { FormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Download, Circle, Clock, CheckCircle2, AlertCircle } from "lucide-react"
+import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Download, Circle, Clock, CheckCircle2, AlertCircle, Users, Building2, Settings, Zap } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -164,10 +163,12 @@ const urgencyOptions: FilterOption[] = [
   {
     label: "Urgente",
     value: "true",
+    icon: Zap,
   },
   {
     label: "Normale",
     value: "false",
+    icon: Circle,
   },
 ]
 
@@ -175,18 +176,22 @@ const activityOptions: FilterOption[] = [
   {
     label: "Installazione",
     value: "Installazione",
+    icon: Settings,
   },
   {
     label: "Manutenzione",
     value: "Manutenzione",
+    icon: Settings,
   },
   {
     label: "Riparazione",
     value: "Riparazione",
+    icon: Settings,
   },
   {
     label: "Consulenza",
     value: "Consulenza",
+    icon: Settings,
   },
 ]
 
@@ -194,18 +199,22 @@ const clientOptions: FilterOption[] = [
   {
     label: "Azienda ABC S.r.l.",
     value: "Azienda ABC S.r.l.",
+    icon: Building2,
   },
   {
     label: "Studio Legale XYZ",
     value: "Studio Legale XYZ",
+    icon: Building2,
   },
   {
     label: "Farmacia Centrale",
     value: "Farmacia Centrale",
+    icon: Building2,
   },
   {
     label: "Negozio Elettronica",
     value: "Negozio Elettronica",
+    icon: Building2,
   },
 ]
 
@@ -213,14 +222,17 @@ const employeeOptions: FilterOption[] = [
   {
     label: "Mario Rossi",
     value: "Mario Rossi",
+    icon: Users,
   },
   {
     label: "Luigi Verdi",
     value: "Luigi Verdi",
+    icon: Users,
   },
   {
     label: "Anna Bianchi",
     value: "Anna Bianchi",
+    icon: Users,
   },
 ]
 
@@ -267,7 +279,7 @@ export default function InterventionsPage() {
             <div className="w-2 h-2 rounded-full flex-shrink-0">
               {intervention.urgent && <div className="w-2 h-2 rounded-full bg-red-500" />}
             </div>
-            <div className="text-sm text-muted-foreground">{row.getValue("code")}</div>
+            <div className="text-sm text-white">{row.getValue("code")}</div>
           </div>
         )
       },
@@ -320,10 +332,10 @@ export default function InterventionsPage() {
         
         return (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
+            <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
               {intervention.activity}
             </span>
-            <span className="font-medium text-sm truncate">{row.getValue("description")}</span>
+            <span className="font-medium text-sm truncate text-white">{row.getValue("description")}</span>
           </div>
         )
       },
@@ -337,7 +349,7 @@ export default function InterventionsPage() {
       accessorKey: "client",
       header: "Cliente",
       cell: ({ row }) => (
-        <div className="font-medium text-sm">{row.getValue("client")}</div>
+        <div className="font-medium text-sm text-white">{row.getValue("client")}</div>
       ),
       size: 200,
       enableGlobalFilter: true,
@@ -357,13 +369,8 @@ export default function InterventionsPage() {
         const status = row.getValue("status") as string
         const intervention = row.original
         
-        const textColor = intervention.urgent ? "text-red-600" :
-          status === "Completato" ? "text-green-600" :
-          status === "In corso" ? "text-yellow-600" :
-          status === "Programmato" ? "text-blue-600" : "text-muted-foreground"
-        
         return (
-          <span className={`inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium bg-transparent ${textColor}`}>
+          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
             {intervention.urgent && "🔴 "}{status}
           </span>
         )
@@ -385,19 +392,12 @@ export default function InterventionsPage() {
         const employee = row.getValue("employee") as string
         
         return (
-          <div className="flex items-center gap-2">
-            <Avatar className="w-6 h-6">
-              <AvatarFallback className="text-xs font-medium">
-                {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
-              {employee}
-            </span>
-          </div>
+          <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
+            {employee}
+          </span>
         )
       },
-      size: 170,
+      size: 150,
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id))
       },
@@ -418,7 +418,7 @@ export default function InterventionsPage() {
           year: 'numeric'
         })
         return (
-          <div className="text-sm text-muted-foreground">{formattedDate}</div>
+          <div className="text-sm text-white">{formattedDate}</div>
         )
       },
       size: 120,
@@ -430,7 +430,7 @@ export default function InterventionsPage() {
       accessorKey: "duration",
       header: "Durata",
       cell: ({ row }) => (
-        <div className="text-sm text-muted-foreground">{row.getValue("duration")}</div>
+        <div className="text-sm text-white">{row.getValue("duration")}</div>
       ),
       size: 110,
       meta: {

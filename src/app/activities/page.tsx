@@ -21,7 +21,13 @@ import { FormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Activity } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Plus, Activity, MoreHorizontal, Edit, Trash2, Download } from "lucide-react"
 
 interface ActivityType {
   id: string
@@ -54,12 +60,41 @@ export default function ActivitiesPage() {
       accessorKey: "name",
       header: "Nome Attività",
       cell: ({ row }) => (
-        <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
+        <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
           {row.getValue("name")}
         </span>
       ),
+      enableGlobalFilter: true,
       meta: {
         label: "Nome Attività",
+      },
+    },
+    {
+      id: "actions",
+      header: "",
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <Edit className="h-4 w-4 mr-2" />
+              Modifica
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive">
+              <Trash2 className="h-4 w-4 mr-2" />
+              Elimina
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+      size: 80,
+      enableHiding: false,
+      meta: {
+        label: "Azioni",
       },
     },
   ]
@@ -102,15 +137,21 @@ export default function ActivitiesPage() {
             </p>
           </div>
           
-          <FormSheet
-            title="Nuova Attività"
-            description="Aggiungi una nuova tipologia di attività"
-            trigger={
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Nuova Attività
-              </Button>
-            }
+          <div className="flex items-center gap-2">
+            <Button variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              Esporta
+            </Button>
+            
+            <FormSheet
+              title="Nuova Attività"
+              description="Aggiungi una nuova tipologia di attività"
+              trigger={
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nuova Attività
+                </Button>
+              }
             onSubmit={async (e) => {
               console.log("Form submitted")
             }}
@@ -121,7 +162,8 @@ export default function ActivitiesPage() {
                 <Input placeholder="Inserisci nome attività" />
               </div>
             </div>
-          </FormSheet>
+            </FormSheet>
+          </div>
         </div>
 
         {/* Data Table */}
