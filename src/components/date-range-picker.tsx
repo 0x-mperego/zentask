@@ -18,6 +18,7 @@ export function DateRangePicker({ value, onChange, className }: DateRangePickerP
       selected={value}
       onSelect={onChange}
       className={className || "rounded-lg border shadow-sm"}
+      numberOfMonths={1}
     />
   )
 }
