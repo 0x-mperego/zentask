@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Download, Circle, Clock, CheckCircle2, AlertCircle, Users, Building2, Settings, Zap } from "lucide-react"
 import {
   DropdownMenu,
@@ -499,6 +500,9 @@ export default function InterventionsPage() {
             <FormSheet
               title="Nuovo Intervento"
               description="Crea un nuovo intervento per un cliente"
+              submitLabel="Crea Intervento"
+              cancelLabel="Annulla"
+              size="lg"
               trigger={
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
@@ -507,9 +511,11 @@ export default function InterventionsPage() {
               }
               onSubmit={async (e) => {
                 console.log("Form submitted")
+                // Qui implementeremo la logica di salvataggio
               }}
             >
-            <div className="space-y-4">
+            <div className="space-y-6">
+              {/* Cliente e Attività */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="client">Cliente *</Label>
@@ -518,8 +524,10 @@ export default function InterventionsPage() {
                       <SelectValue placeholder="Seleziona cliente" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="abc">Azienda ABC</SelectItem>
-                      <SelectItem value="xyz">Studio Legale XYZ</SelectItem>
+                      <SelectItem value="azienda-abc">Azienda ABC S.r.l.</SelectItem>
+                      <SelectItem value="studio-xyz">Studio Legale XYZ</SelectItem>
+                      <SelectItem value="farmacia">Farmacia Centrale</SelectItem>
+                      <SelectItem value="negozio">Negozio Elettronica</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -531,33 +539,81 @@ export default function InterventionsPage() {
                       <SelectValue placeholder="Seleziona attività" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="install">Installazione</SelectItem>
-                      <SelectItem value="maintenance">Manutenzione</SelectItem>
+                      <SelectItem value="consulenza">Consulenza</SelectItem>
+                      <SelectItem value="installazione">Installazione</SelectItem>
+                      <SelectItem value="manutenzione">Manutenzione</SelectItem>
+                      <SelectItem value="riparazione">Riparazione</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
+              {/* Descrizione */}
               <div className="space-y-2">
                 <Label htmlFor="description">Descrizione *</Label>
-                <Input placeholder="Descrizione dell'intervento" />
+                <Input placeholder="Breve descrizione dell'intervento da eseguire" />
               </div>
 
+              {/* Dipendente e Stato */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="employee">Dipendente *</Label>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Assegna dipendente" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="anna-bianchi">Anna Bianchi</SelectItem>
+                      <SelectItem value="luigi-verdi">Luigi Verdi</SelectItem>
+                      <SelectItem value="mario-rossi">Mario Rossi</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="status">Stato *</Label>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Stato iniziale" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="programmato">Programmato</SelectItem>
+                      <SelectItem value="in-corso">In corso</SelectItem>
+                      <SelectItem value="completato">Completato</SelectItem>
+                      <SelectItem value="sospeso">Sospeso</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Data e Durata */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="startDate">Data Inizio *</Label>
-                  <Input type="date" defaultValue="2024-01-15" />
+                  <Input type="date" defaultValue="2025-01-15" />
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="duration">Durata Stimata</Label>
-                  <Input placeholder="es. 4h, 2 giorni" />
+                  <Input placeholder="es. 2h 30min, 1 giorno" />
                 </div>
               </div>
 
+              {/* Urgenza */}
+              <div className="flex items-center space-x-2">
+                <Checkbox id="urgent" />
+                <Label htmlFor="urgent" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Intervento urgente
+                </Label>
+              </div>
+
+              {/* Note */}
               <div className="space-y-2">
                 <Label htmlFor="notes">Note</Label>
-                <Textarea placeholder="Note aggiuntive sull'intervento" />
+                <Textarea 
+                  placeholder="Note aggiuntive, dettagli tecnici o istruzioni speciali" 
+                  className="min-h-[80px]"
+                />
               </div>
             </div>
           </FormSheet>
