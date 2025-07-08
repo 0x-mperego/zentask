@@ -164,4 +164,8 @@
   .urgency-switch[data-state="checked"] {
     background-color: #ef4444 !important;
   }
+  
+  .urgency-switch[data-state="checked"] [data-state="checked"] {
+    background-color: white !important;
+  }
 }

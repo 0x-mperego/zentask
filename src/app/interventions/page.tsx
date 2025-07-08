@@ -686,7 +686,7 @@ export default function InterventionsPage() {
 
                 {/* Urgenza */}
                 <Card className="w-full">
-                  <CardContent className="p-4">
+                  <CardContent className="p-4" style={{ padding: '16px' }}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
@@ -709,34 +709,11 @@ export default function InterventionsPage() {
                 {/* Date Intervento */}
                 <div className="space-y-2">
                   <Label>Date Intervento *</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !dateRange && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dateRange?.from ? (
-                          dateRange.to ? (
-                            `${dateRange.from.toLocaleDateString('it-IT')} - ${dateRange.to.toLocaleDateString('it-IT')}`
-                          ) : (
-                            dateRange.from.toLocaleDateString('it-IT')
-                          )
-                        ) : (
-                          "Seleziona date"
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <InterventionDatePicker 
-                        value={dateRange}
-                        onChange={setDateRange}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <InterventionDatePicker 
+                    value={dateRange}
+                    onChange={setDateRange}
+                    placeholder="Seleziona date"
+                  />
                 </div>
                 
                 {/* Durata */}
