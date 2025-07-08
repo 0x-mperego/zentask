@@ -161,6 +161,36 @@ const statusOptions: FilterOption[] = [
   },
 ]
 
+const urgencyOptions: FilterOption[] = [
+  {
+    label: "Urgente",
+    value: "true",
+  },
+  {
+    label: "Normale",
+    value: "false",
+  },
+]
+
+const activityOptions: FilterOption[] = [
+  {
+    label: "Installazione",
+    value: "Installazione",
+  },
+  {
+    label: "Manutenzione",
+    value: "Manutenzione",
+  },
+  {
+    label: "Riparazione",
+    value: "Riparazione",
+  },
+  {
+    label: "Consulenza",
+    value: "Consulenza",
+  },
+]
+
 const clientOptions: FilterOption[] = [
   {
     label: "Azienda ABC S.r.l.",
@@ -235,7 +265,7 @@ export default function InterventionsPage() {
             <div className="w-2 h-2 rounded-full flex-shrink-0">
               {intervention.urgent && <div className="w-2 h-2 rounded-full bg-red-500" />}
             </div>
-            <div className="font-mono text-sm text-muted-foreground">{row.getValue("code")}</div>
+            <div className="text-sm text-muted-foreground">{row.getValue("code")}</div>
           </div>
         )
       },
@@ -243,6 +273,39 @@ export default function InterventionsPage() {
       enableGlobalFilter: true,
       meta: {
         label: "ID",
+      },
+    },
+    {
+      accessorKey: "urgent",
+      header: "Urgenza",
+      cell: ({ row }) => null,
+      enableColumnFilter: true,
+      enableGlobalFilter: false,
+      accessorFn: (row) => row.urgent ? "true" : "false",
+      filterFn: (row, id, value) => {
+        const isUrgent = row.original.urgent
+        const urgentStr = isUrgent ? "true" : "false"
+        return value.includes(urgentStr)
+      },
+      meta: {
+        label: "Urgenza",
+        variant: "multi-select",
+        options: urgencyOptions,
+      },
+    },
+    {
+      accessorKey: "activity",
+      header: "Attività",
+      cell: ({ row }) => null,
+      enableColumnFilter: true,
+      enableGlobalFilter: false,
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      },
+      meta: {
+        label: "Attività",
+        variant: "multi-select",
+        options: activityOptions,
       },
     },
     {
@@ -372,7 +435,7 @@ export default function InterventionsPage() {
       accessorKey: "duration",
       header: "Durata",
       cell: ({ row }) => (
-        <div className="text-sm font-mono text-muted-foreground">{row.getValue("duration")}</div>
+        <div className="text-sm text-muted-foreground">{row.getValue("duration")}</div>
       ),
       size: 110,
       meta: {
