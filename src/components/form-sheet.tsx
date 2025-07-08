@@ -37,7 +37,7 @@ const sizeClasses = {
   default: "max-w-md",
   lg: "max-w-lg", 
   xl: "max-w-xl",
-  "2xl": "w-[30vw] max-w-none",
+  "2xl": "",
   full: "max-w-full",
 }
 
@@ -98,6 +98,7 @@ export function FormSheet({
       
       <SheetContent 
         className={cn("flex flex-col", sizeClasses[size], className)}
+        style={size === "2xl" ? { width: "30vw" } : undefined}
         onKeyDown={handleKeyDown}
         onInteractOutside={(e) => {
           if (loading) {
