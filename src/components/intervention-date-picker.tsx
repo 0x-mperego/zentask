@@ -4,20 +4,19 @@ import * as React from "react"
 import { type DateRange } from "react-day-picker"
 import { Calendar } from "@/components/ui/calendar"
 
-interface DateRangePickerProps {
+interface InterventionDatePickerProps {
   value?: DateRange
   onChange?: (dateRange: DateRange | undefined) => void
-  className?: string
 }
 
-export function DateRangePicker({ value, onChange, className }: DateRangePickerProps) {
+export function InterventionDatePicker({ value, onChange }: InterventionDatePickerProps) {
   return (
     <Calendar
       mode="range"
       defaultMonth={value?.from}
       selected={value}
       onSelect={onChange}
-      className={className || "rounded-lg border shadow-sm"}
+      className="rounded-lg border shadow-sm"
       numberOfMonths={1}
     />
   )

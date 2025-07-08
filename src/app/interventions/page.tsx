@@ -28,7 +28,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/animate-ui/radix/switch"
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
-import { Calendar } from "@/components/ui/calendar"
+import { InterventionDatePicker } from "@/components/intervention-date-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileUpload } from "@/components/file-upload"
@@ -639,52 +639,55 @@ export default function InterventionsPage() {
                   </div>
                 </div>
 
-                {/* Stato e Dipendente */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="status">Stato *</Label>
-                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleziona stato" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {statusSelectOptions.map((status) => (
-                          <SelectItem key={status.value} value={status.value}>
-                            {status.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                {/* Stato */}
+                <div className="space-y-2">
+                  <Label htmlFor="status">Stato *</Label>
+                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Seleziona stato" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statusSelectOptions.map((status) => (
+                        <SelectItem key={status.value} value={status.value}>
+                          {status.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="employee">Dipendente *</Label>
-                    <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleziona dipendente" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {employeeSelectOptions.map((employee) => (
-                          <SelectItem key={employee.value} value={employee.value}>
-                            {employee.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                {/* Dipendente */}
+                <div className="space-y-2">
+                  <Label htmlFor="employee">Dipendente *</Label>
+                  <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Seleziona dipendente" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {employeeSelectOptions.map((employee) => (
+                        <SelectItem key={employee.value} value={employee.value}>
+                          {employee.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Urgenza */}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">!</span>
+                    </div>
+                    <Label htmlFor="urgent" className="text-sm font-medium">
+                      Urgente
+                    </Label>
+                  </div>
                   <Switch
                     id="urgent"
                     checked={isUrgent}
                     onCheckedChange={setIsUrgent}
-                    rightIcon={<Zap />}
                   />
-                  <Label htmlFor="urgent" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Urgente
-                  </Label>
                 </div>
 
                 {/* Date Intervento */}
@@ -712,13 +715,9 @@ export default function InterventionsPage() {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="range"
-                        defaultMonth={dateRange?.from}
-                        selected={dateRange}
-                        onSelect={setDateRange}
-                        numberOfMonths={1}
-                        showOutsideDays={false}
+                      <InterventionDatePicker 
+                        value={dateRange}
+                        onChange={setDateRange}
                       />
                     </PopoverContent>
                   </Popover>
