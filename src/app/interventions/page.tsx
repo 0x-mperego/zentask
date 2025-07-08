@@ -29,7 +29,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/animate-ui/radix/switch"
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { EmployeeSelect, type EmployeeOption } from "@/components/ui/employee-select"
-import { Calendar } from "@/components/ui/calendar"
+import { DateRangePicker } from "@/components/date-range-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileUpload } from "@/components/file-upload"
@@ -708,12 +708,9 @@ export default function InterventionsPage() {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="range"
-                        defaultMonth={dateRange?.from}
-                        selected={dateRange}
-                        onSelect={setDateRange}
-                        numberOfMonths={2}
+                      <DateRangePicker 
+                        value={dateRange}
+                        onChange={setDateRange}
                       />
                     </PopoverContent>
                   </Popover>
