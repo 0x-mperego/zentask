@@ -160,38 +160,8 @@
     @apply bg-background text-foreground;
   }
   
-  /* Calendar range styling - Force highlighting of middle dates */
-  .rdp-day_range_middle button,
-  .rdp-day_range_middle,
-  [data-range-middle="true"] {
-    background-color: hsl(var(--accent)) !important;
-    color: hsl(var(--accent-foreground)) !important;
-  }
-  
-  .rdp-day_range_start button,
-  .rdp-day_range_start,
-  [data-range-start="true"] {
-    background-color: hsl(var(--primary)) !important;
-    color: hsl(var(--primary-foreground)) !important;
-  }
-  
-  .rdp-day_range_end button,
-  .rdp-day_range_end,
-  [data-range-end="true"] {
-    background-color: hsl(var(--primary)) !important;
-    color: hsl(var(--primary-foreground)) !important;
-  }
-  
-  /* Additional forced styling for range selection */
-  .rdp-cell:has([data-range-middle="true"]) {
-    background-color: hsl(var(--accent)) !important;
-  }
-  
-  .rdp-cell:has([data-range-start="true"]) {
-    background-color: hsl(var(--primary)) !important;
-  }
-  
-  .rdp-cell:has([data-range-end="true"]) {
-    background-color: hsl(var(--primary)) !important;
+  /* Custom styling for urgency switch */
+  .urgency-switch[data-state="checked"] {
+    background-color: #ef4444 !important;
   }
 }
