@@ -317,20 +317,10 @@ export default function InterventionsPage() {
       header: "Descrizione",
       cell: ({ row }) => {
         const intervention = row.original
-        const activityColors: Record<string, string> = {
-          "Installazione": "bg-blue-100 text-blue-800 border-blue-200",
-          "Manutenzione": "bg-green-100 text-green-800 border-green-200",
-          "Riparazione": "bg-orange-100 text-orange-800 border-orange-200",
-          "Consulenza": "bg-purple-100 text-purple-800 border-purple-200"
-        }
-        const colorClass = activityColors[intervention.activity] || "bg-gray-100 text-gray-800 border-gray-200"
         
         return (
           <div className="flex items-center gap-2">
-            <Badge 
-              variant="outline" 
-              className={`whitespace-nowrap text-xs px-2 py-1 border ${colorClass}`}
-            >
+            <Badge variant="secondary" className="whitespace-nowrap text-xs">
               {intervention.activity}
             </Badge>
             <span className="font-medium text-sm truncate">{row.getValue("description")}</span>
@@ -367,31 +357,9 @@ export default function InterventionsPage() {
         const status = row.getValue("status") as string
         const intervention = row.original
         
-        if (intervention.urgent) {
-          return (
-            <Badge 
-              variant="outline" 
-              className="whitespace-nowrap text-xs px-2 py-1 border bg-red-100 text-red-800 border-red-200"
-            >
-              🔴 {status}
-            </Badge>
-          )
-        }
-        
-        const statusColors: Record<string, string> = {
-          "Completato": "bg-green-100 text-green-800 border-green-200",
-          "In corso": "bg-yellow-100 text-yellow-800 border-yellow-200", 
-          "Programmato": "bg-blue-100 text-blue-800 border-blue-200",
-          "Sospeso": "bg-gray-100 text-gray-800 border-gray-200"
-        }
-        const colorClass = statusColors[status] || "bg-gray-100 text-gray-800 border-gray-200"
-        
         return (
-          <Badge 
-            variant="outline" 
-            className={`whitespace-nowrap text-xs px-2 py-1 border ${colorClass}`}
-          >
-            {status}
+          <Badge variant="secondary" className="whitespace-nowrap text-xs">
+            {intervention.urgent && "🔴 "}{status}
           </Badge>
         )
       },
@@ -410,29 +378,16 @@ export default function InterventionsPage() {
       header: "Dipendente",
       cell: ({ row }) => {
         const employee = row.getValue("employee") as string
-        const getAvatarColor = (name: string) => {
-          const colors = [
-            "bg-blue-600", "bg-green-600", "bg-purple-600", "bg-orange-600", 
-            "bg-pink-600", "bg-indigo-600", "bg-teal-600", "bg-red-600"
-          ]
-          const index = name.length % colors.length
-          return colors[index]
-        }
         
         return (
-          <div className="flex items-center gap-2">
-            <Avatar className="w-5 h-5">
-              <AvatarFallback className={`text-xs text-white font-medium ${getAvatarColor(employee)}`}>
+          <Badge variant="secondary" className="whitespace-nowrap text-xs flex items-center gap-1.5 pl-1">
+            <Avatar className="w-4 h-4">
+              <AvatarFallback className="text-xs font-medium bg-muted-foreground text-white">
                 {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <Badge 
-              variant="outline" 
-              className="whitespace-nowrap text-xs px-2 py-1 border bg-slate-100 text-slate-800 border-slate-200"
-            >
-              {employee}
-            </Badge>
-          </div>
+            {employee}
+          </Badge>
         )
       },
       size: 170,
@@ -552,19 +507,25 @@ export default function InterventionsPage() {
             </p>
           </div>
           
-          <FormSheet
-            title="Nuovo Intervento"
-            description="Crea un nuovo intervento per un cliente"
-            trigger={
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Nuovo Intervento
-              </Button>
-            }
-            onSubmit={async (e) => {
-              console.log("Form submitted")
-            }}
-          >
+          <div className="flex items-center gap-2">
+            <Button variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              Esporta
+            </Button>
+            
+            <FormSheet
+              title="Nuovo Intervento"
+              description="Crea un nuovo intervento per un cliente"
+              trigger={
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nuovo Intervento
+                </Button>
+              }
+              onSubmit={async (e) => {
+                console.log("Form submitted")
+              }}
+            >
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -617,6 +578,7 @@ export default function InterventionsPage() {
               </div>
             </div>
           </FormSheet>
+          </div>
         </div>
 
       </div>
@@ -655,12 +617,7 @@ export default function InterventionsPage() {
         <DataTableToolbar 
           table={table} 
           searchPlaceholder="Cerca per codice, descrizione, cliente o note..."
-        >
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Esporta Excel
-          </Button>
-        </DataTableToolbar>
+        />
       </DataTable>
 
       {/* Delete Confirmation Dialog */}
