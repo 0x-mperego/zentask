@@ -29,7 +29,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/animate-ui/radix/switch"
 import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
 import { EmployeeSelect, type EmployeeOption } from "@/components/ui/employee-select"
-import { DateRangePicker } from "@/components/date-range-picker"
+import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileUpload } from "@/components/file-upload"
@@ -303,6 +303,11 @@ export default function InterventionsPage() {
   })
   const [rowSelection, setRowSelection] = React.useState({})
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>()
+  
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    console.log("Date range changed:", range)
+    setDateRange(range)
+  }
   const [isUrgent, setIsUrgent] = React.useState(false)
   const [selectedActivity, setSelectedActivity] = React.useState<string>("")
   const [selectedClient, setSelectedClient] = React.useState<string>("")
@@ -708,9 +713,13 @@ export default function InterventionsPage() {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <DateRangePicker 
-                        value={dateRange}
-                        onChange={setDateRange}
+                      <Calendar
+                        mode="range"
+                        defaultMonth={dateRange?.from}
+                        selected={dateRange}
+                        onSelect={handleDateRangeChange}
+                        numberOfMonths={1}
+                        showOutsideDays={false}
                       />
                     </PopoverContent>
                   </Popover>
