@@ -36,6 +36,7 @@ export function InterventionDatePicker({
   }, [value]);
 
   const handleSelect = (range: DateRange | undefined) => {
+    console.log('DateRangePicker - Selected range:', range);
     setDate(range);
     onChange?.(range);
   };

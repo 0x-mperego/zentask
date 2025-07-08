@@ -686,7 +686,7 @@ export default function InterventionsPage() {
 
                 {/* Urgenza */}
                 <Card className="w-full">
-                  <CardContent className="p-4" style={{ padding: '16px' }}>
+                  <CardContent style={{ padding: '16px' }}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
