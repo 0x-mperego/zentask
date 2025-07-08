@@ -504,7 +504,7 @@ export default function InterventionsPage() {
               description="Crea un nuovo intervento per un cliente"
               submitLabel="Crea Intervento"
               cancelLabel="Annulla"
-              size="xl"
+              size="2xl"
               trigger={
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
@@ -518,8 +518,8 @@ export default function InterventionsPage() {
             >
             <Tabs defaultValue="dettagli" className="h-full -mx-6">
               <TabsList className="grid w-full grid-cols-2 rounded-none">
-                <TabsTrigger value="dettagli">Dettagli</TabsTrigger>
-                <TabsTrigger value="log">Log</TabsTrigger>
+                <TabsTrigger value="dettagli" className="rounded-none">Dettagli</TabsTrigger>
+                <TabsTrigger value="log" className="rounded-none">Log</TabsTrigger>
               </TabsList>
               
               <TabsContent value="dettagli" className="space-y-6 mt-6 px-6">

@@ -28,7 +28,7 @@ interface FormSheetProps {
   cancelLabel?: string
   loading?: boolean
   disabled?: boolean
-  size?: "sm" | "default" | "lg" | "xl" | "full"
+  size?: "sm" | "default" | "lg" | "xl" | "2xl" | "full"
   className?: string
 }
 
@@ -37,6 +37,7 @@ const sizeClasses = {
   default: "max-w-md",
   lg: "max-w-lg", 
   xl: "max-w-xl",
+  "2xl": "max-w-6xl",
   full: "max-w-full",
 }
 
@@ -123,38 +124,26 @@ export function FormSheet({
             {children}
           </div>
 
-          <Separator className="my-4" />
 
           {/* Footer */}
-          <SheetFooter className="flex-shrink-0 pb-6 px-6">
-            <div className="flex w-full gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={loading}
-                className="flex-1"
-              >
-                {cancelLabel}
-              </Button>
-              <Button
-                type="submit"
-                disabled={loading || disabled}
-                className="flex-1"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Salvando...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    {submitLabel}
-                  </>
-                )}
-              </Button>
-            </div>
+          <SheetFooter className="flex-shrink-0 pt-6 pb-6 px-6">
+            <Button
+              type="submit"
+              disabled={loading || disabled}
+              className="w-full"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                  {submitLabel}
+                </>
+              )}
+            </Button>
           </SheetFooter>
         </form>
       </SheetContent>
