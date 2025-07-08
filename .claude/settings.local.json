@@ -13,7 +13,8 @@
       "Bash(pnpm biome check:*)",
       "Bash(pnpm build:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:vercel.com)"
+      "WebFetch(domain:vercel.com)",
+      "Bash(npx shadcn@latest add:*)"
     ],
     "deny": []
   }

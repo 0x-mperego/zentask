@@ -97,8 +97,8 @@ export function FormSheet({
       {trigger && <SheetTrigger asChild>{trigger}</SheetTrigger>}
       
       <SheetContent 
-        className={cn("flex flex-col", sizeClasses[size], size === "2xl" ? "!w-[50vw] !max-w-none" : "", className)}
-        style={size === "2xl" ? { width: "50vw", maxWidth: "none" } : undefined}
+        className={cn("flex flex-col", sizeClasses[size], size === "2xl" ? "!w-[32rem] !max-w-none" : "", className)}
+        style={size === "2xl" ? { width: "32rem", maxWidth: "none" } : undefined}
         onKeyDown={handleKeyDown}
         onInteractOutside={(e) => {
           if (loading) {

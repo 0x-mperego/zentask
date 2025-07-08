@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
+import { type DateRange } from "react-day-picker"
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -24,10 +26,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Switch } from "@/components/animate-ui/radix/switch"
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox"
+import { EmployeeSelect, type EmployeeOption } from "@/components/ui/employee-select"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileUpload } from "@/components/file-upload"
-import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Download, Circle, Clock, CheckCircle2, AlertCircle, Users, Building2, Settings, Zap } from "lucide-react"
+import { Plus, MoreHorizontal, ClipboardList, Edit, Trash2, Download, Circle, Clock, CheckCircle2, AlertCircle, Users, Building2, Settings, Zap, CalendarIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -158,6 +164,81 @@ const statusOptions: FilterOption[] = [
   },
 ]
 
+const activityComboboxOptions: ComboboxOption[] = [
+  {
+    label: "Consulenza",
+    value: "consulenza",
+  },
+  {
+    label: "Installazione",
+    value: "installazione",
+  },
+  {
+    label: "Manutenzione",
+    value: "manutenzione",
+  },
+  {
+    label: "Riparazione",
+    value: "riparazione",
+  },
+]
+
+const clientComboboxOptions: ComboboxOption[] = [
+  {
+    label: "Azienda ABC S.r.l.",
+    value: "azienda-abc",
+  },
+  {
+    label: "Studio Legale XYZ",
+    value: "studio-xyz",
+  },
+  {
+    label: "Farmacia Centrale",
+    value: "farmacia",
+  },
+  {
+    label: "Negozio Elettronica",
+    value: "negozio",
+  },
+]
+
+const employeeSelectOptions: EmployeeOption[] = [
+  {
+    label: "Anna Bianchi",
+    value: "anna-bianchi",
+    avatar: "/avatars/anna-bianchi.jpg",
+  },
+  {
+    label: "Luigi Verdi",
+    value: "luigi-verdi",
+    avatar: "/avatars/luigi-verdi.jpg",
+  },
+  {
+    label: "Mario Rossi",
+    value: "mario-rossi",
+    avatar: "/avatars/mario-rossi.jpg",
+  },
+]
+
+const statusComboboxOptions: ComboboxOption[] = [
+  {
+    label: "Programmato",
+    value: "programmato",
+  },
+  {
+    label: "In corso",
+    value: "in-corso",
+  },
+  {
+    label: "Completato",
+    value: "completato",
+  },
+  {
+    label: "Sospeso",
+    value: "sospeso",
+  },
+]
+
 const activityOptions: FilterOption[] = [
   {
     label: "Consulenza",
@@ -221,6 +302,12 @@ export default function InterventionsPage() {
     activity: false,
   })
   const [rowSelection, setRowSelection] = React.useState({})
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>()
+  const [isUrgent, setIsUrgent] = React.useState(false)
+  const [selectedActivity, setSelectedActivity] = React.useState<string>("")
+  const [selectedClient, setSelectedClient] = React.useState<string>("")
+  const [selectedStatus, setSelectedStatus] = React.useState<string>("")
+  const [selectedEmployee, setSelectedEmployee] = React.useState<string>("")
 
   const handleEditIntervention = (intervention: Intervention) => {
     setEditingIntervention(intervention)
@@ -526,39 +613,33 @@ export default function InterventionsPage() {
                 {/* Descrizione */}
                 <div className="space-y-2">
                   <Label htmlFor="description">Descrizione *</Label>
-                  <Input placeholder="Breve descrizione dell'intervento" />
+                  <Input placeholder="Breve descrizione dell'intervento" className="w-full" />
                 </div>
 
                 {/* Attività e Cliente */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="activity">Attività *</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleziona attività" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="consulenza">Consulenza</SelectItem>
-                        <SelectItem value="installazione">Installazione</SelectItem>
-                        <SelectItem value="manutenzione">Manutenzione</SelectItem>
-                        <SelectItem value="riparazione">Riparazione</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Combobox
+                      options={activityComboboxOptions}
+                      value={selectedActivity}
+                      onValueChange={setSelectedActivity}
+                      placeholder="Seleziona attività"
+                      searchPlaceholder="Cerca attività..."
+                      emptyMessage="Nessuna attività trovata."
+                    />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="client">Cliente *</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleziona cliente" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="azienda-abc">Azienda ABC S.r.l.</SelectItem>
-                        <SelectItem value="studio-xyz">Studio Legale XYZ</SelectItem>
-                        <SelectItem value="farmacia">Farmacia Centrale</SelectItem>
-                        <SelectItem value="negozio">Negozio Elettronica</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Combobox
+                      options={clientComboboxOptions}
+                      value={selectedClient}
+                      onValueChange={setSelectedClient}
+                      placeholder="Seleziona cliente"
+                      searchPlaceholder="Cerca cliente..."
+                      emptyMessage="Nessun cliente trovato."
+                    />
                   </div>
                 </div>
 
@@ -566,60 +647,89 @@ export default function InterventionsPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="status">Stato *</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleziona stato" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="programmato">Programmato</SelectItem>
-                        <SelectItem value="in-corso">In corso</SelectItem>
-                        <SelectItem value="completato">Completato</SelectItem>
-                        <SelectItem value="sospeso">Sospeso</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Combobox
+                      options={statusComboboxOptions}
+                      value={selectedStatus}
+                      onValueChange={setSelectedStatus}
+                      placeholder="Seleziona stato"
+                      searchPlaceholder="Cerca stato..."
+                      emptyMessage="Nessuno stato trovato."
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="employee">Dipendente *</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleziona dipendente" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="anna-bianchi">Anna Bianchi</SelectItem>
-                        <SelectItem value="luigi-verdi">Luigi Verdi</SelectItem>
-                        <SelectItem value="mario-rossi">Mario Rossi</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <EmployeeSelect
+                      options={employeeSelectOptions}
+                      value={selectedEmployee}
+                      onValueChange={setSelectedEmployee}
+                      placeholder="Seleziona dipendente"
+                      searchPlaceholder="Cerca dipendente..."
+                      emptyMessage="Nessun dipendente trovato."
+                    />
                   </div>
                 </div>
 
                 {/* Urgenza */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="urgent" />
+                <div className="flex items-center space-x-3">
+                  <Switch
+                    id="urgent"
+                    checked={isUrgent}
+                    onCheckedChange={setIsUrgent}
+                    rightIcon={<Zap />}
+                  />
                   <Label htmlFor="urgent" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     Urgente
                   </Label>
                 </div>
 
-                {/* Date Intervento e Durata */}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="startDate">Date Intervento *</Label>
-                    <Input type="date" defaultValue="2025-07-08" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label>Durata</Label>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="hours" className="text-sm text-muted-foreground">Ore</Label>
-                        <Input type="number" min="0" max="23" defaultValue="0" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="minutes" className="text-sm text-muted-foreground">Minuti</Label>
-                        <Input type="number" min="0" max="59" defaultValue="0" />
-                      </div>
+                {/* Date Intervento */}
+                <div className="space-y-2">
+                  <Label>Date Intervento *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !dateRange && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateRange?.from ? (
+                          dateRange.to ? (
+                            `${dateRange.from.toLocaleDateString('it-IT')} - ${dateRange.to.toLocaleDateString('it-IT')}`
+                          ) : (
+                            dateRange.from.toLocaleDateString('it-IT')
+                          )
+                        ) : (
+                          "Seleziona date"
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="range"
+                        defaultMonth={dateRange?.from}
+                        selected={dateRange}
+                        onSelect={setDateRange}
+                        numberOfMonths={2}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                
+                {/* Durata */}
+                <div className="space-y-2">
+                  <Label>Durata</Label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="hours" className="text-sm text-muted-foreground">Ore</Label>
+                      <Input type="number" min="0" max="23" defaultValue="0" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="minutes" className="text-sm text-muted-foreground">Minuti</Label>
+                      <Input type="number" min="0" max="59" defaultValue="0" />
                     </div>
                   </div>
                 </div>
@@ -629,7 +739,7 @@ export default function InterventionsPage() {
                   <Label htmlFor="notes">Note</Label>
                   <Textarea 
                     placeholder="Note aggiuntive, dettagli tecnici o commenti..." 
-                    className="min-h-[100px]"
+                    className="min-h-[100px] w-full"
                   />
                 </div>
 
@@ -640,6 +750,7 @@ export default function InterventionsPage() {
                     maxFiles={5}
                     maxSize={10 * 1024 * 1024}
                     onFilesChange={(files) => console.log("Files uploaded:", files)}
+                    className="w-full"
                   />
                 </div>
               </TabsContent>
