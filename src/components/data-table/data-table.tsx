@@ -108,7 +108,7 @@ export function DataTable<TData>({
           {/* Desktop Table */}
           <div className="hidden md:block w-full">
             <div className="overflow-hidden border rounded-none">
-              <Table className="w-auto max-w-full">
+              <Table className="w-full">
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options"
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
+import { DataTableUrgencyFilter } from "@/components/data-table/data-table-urgency-filter"
 import type { FilterOption } from "@/lib/data-table"
 
 interface DataTableToolbarProps<TData> {
@@ -40,7 +41,7 @@ export function DataTableToolbar<TData>({
     .getAllColumns()
     .filter((column) => {
       const meta = column.columnDef.meta
-      return meta?.variant && meta?.options && column.getCanFilter()
+      return meta?.variant && (meta?.options || meta?.variant === "toggle") && column.getCanFilter()
     })
 
   return (
@@ -58,6 +59,16 @@ export function DataTableToolbar<TData>({
           {filterableColumns.map((column) => {
             const meta = column.columnDef.meta
             if (!meta?.options) return null
+
+            // Special handling for urgency filter
+            if (column.id === "urgent") {
+              return (
+                <DataTableUrgencyFilter
+                  key={column.id}
+                  column={column}
+                />
+              )
+            }
 
             return (
               <DataTableFacetedFilter

@@ -138,12 +138,12 @@ const mockData: Intervention[] = [
 // Filter options for faceted filters
 const statusOptions: FilterOption[] = [
   {
-    label: "In corso",
-    value: "In corso",
-  },
-  {
     label: "Completato",
     value: "Completato",
+  },
+  {
+    label: "In corso",
+    value: "In corso",
   },
   {
     label: "Programmato",
@@ -155,18 +155,11 @@ const statusOptions: FilterOption[] = [
   },
 ]
 
-const urgencyOptions: FilterOption[] = [
-  {
-    label: "Urgente",
-    value: "true",
-  },
-  {
-    label: "Normale",
-    value: "false",
-  },
-]
-
 const activityOptions: FilterOption[] = [
+  {
+    label: "Consulenza",
+    value: "Consulenza",
+  },
   {
     label: "Installazione",
     value: "Installazione",
@@ -178,10 +171,6 @@ const activityOptions: FilterOption[] = [
   {
     label: "Riparazione",
     value: "Riparazione",
-  },
-  {
-    label: "Consulenza",
-    value: "Consulenza",
   },
 ]
 
@@ -206,16 +195,16 @@ const clientOptions: FilterOption[] = [
 
 const employeeOptions: FilterOption[] = [
   {
-    label: "Mario Rossi",
-    value: "Mario Rossi",
+    label: "Anna Bianchi",
+    value: "Anna Bianchi",
   },
   {
     label: "Luigi Verdi",
     value: "Luigi Verdi",
   },
   {
-    label: "Anna Bianchi",
-    value: "Anna Bianchi",
+    label: "Mario Rossi",
+    value: "Mario Rossi",
   },
 ]
 
@@ -287,8 +276,7 @@ export default function InterventionsPage() {
       },
       meta: {
         label: "Urgenza",
-        variant: "multi-select",
-        options: urgencyOptions,
+        variant: "toggle",
         filterIcon: Zap,
       },
     },

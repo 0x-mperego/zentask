@@ -30,6 +30,7 @@ export type FilterVariant =
   | "text"
   | "select" 
   | "multi-select"
+  | "toggle"
   | "date"
   | "date-range"
   | "number"
