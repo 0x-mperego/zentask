@@ -83,12 +83,12 @@ export function DataTableToolbar<TData>({
 
           {isFiltered && (
             <Button
-              variant="ghost"
+              variant="outline"
               onClick={() => table.resetColumnFilters()}
-              className="h-8 px-2 lg:px-3"
+              className="h-8 px-3 border-dashed"
             >
+              <X className="mr-2 h-4 w-4" />
               Reset
-              <X className="ml-2 h-4 w-4" />
             </Button>
           )}
         </div>
