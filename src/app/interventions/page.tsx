@@ -504,7 +504,7 @@ export default function InterventionsPage() {
               description="Crea un nuovo intervento per un cliente"
               submitLabel="Crea Intervento"
               cancelLabel="Annulla"
-              size="lg"
+              size="xl"
               trigger={
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
@@ -516,13 +516,13 @@ export default function InterventionsPage() {
                 // Qui implementeremo la logica di salvataggio
               }}
             >
-            <Tabs defaultValue="dettagli" className="h-full">
-              <TabsList className="grid w-full grid-cols-2">
+            <Tabs defaultValue="dettagli" className="h-full -mx-6">
+              <TabsList className="grid w-full grid-cols-2 rounded-none">
                 <TabsTrigger value="dettagli">Dettagli</TabsTrigger>
                 <TabsTrigger value="log">Log</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="dettagli" className="space-y-6 mt-6">
+              <TabsContent value="dettagli" className="space-y-6 mt-6 px-6">
                 {/* Descrizione */}
                 <div className="space-y-2">
                   <Label htmlFor="description">Descrizione *</Label>
@@ -644,7 +644,7 @@ export default function InterventionsPage() {
                 </div>
               </TabsContent>
               
-              <TabsContent value="log" className="space-y-4 mt-6">
+              <TabsContent value="log" className="space-y-4 mt-6 px-6">
                 <div className="text-center text-muted-foreground py-8">
                   <p>Il log degli eventi sarà disponibile dopo la creazione dell'intervento.</p>
                   <p className="text-sm mt-2">Qui verranno mostrati tutti i cambiamenti di stato, note e azioni eseguite.</p>

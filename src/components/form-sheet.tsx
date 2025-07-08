@@ -105,7 +105,7 @@ export function FormSheet({
         }}
       >
         {/* Header */}
-        <SheetHeader className="space-y-2 px-6 pt-6">
+        <SheetHeader className="space-y-2 px-6 pt-4 pb-2">
           <SheetTitle className="text-left">{title}</SheetTitle>
           {description && (
             <SheetDescription className="text-left">
@@ -114,35 +114,33 @@ export function FormSheet({
           )}
         </SheetHeader>
 
-        <Separator className="my-4" />
-
         {/* Form Content */}
         <form 
           onSubmit={handleSubmit}
-          className="flex flex-1 flex-col px-6"
+          className="flex flex-1 flex-col"
         >
-          <div className="flex-1 space-y-6 overflow-y-auto">
+          <div className="flex-1 space-y-6 overflow-y-auto px-6">
             {children}
           </div>
 
           <Separator className="my-4" />
 
           {/* Footer */}
-          <SheetFooter className="flex-shrink-0 pb-6">
-            <div className="flex w-full gap-2 sm:justify-end">
+          <SheetFooter className="flex-shrink-0 pb-6 px-6">
+            <div className="flex w-full gap-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleCancel}
                 disabled={loading}
-                className="flex-1 sm:flex-initial"
+                className="flex-1"
               >
                 {cancelLabel}
               </Button>
               <Button
                 type="submit"
                 disabled={loading || disabled}
-                className="flex-1 sm:flex-initial"
+                className="flex-1"
               >
                 {loading ? (
                   <>
