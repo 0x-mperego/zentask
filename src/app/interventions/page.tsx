@@ -320,7 +320,7 @@ export default function InterventionsPage() {
         
         return (
           <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="whitespace-nowrap text-xs">
+            <Badge variant="secondary">
               {intervention.activity}
             </Badge>
             <span className="font-medium text-sm truncate">{row.getValue("description")}</span>
@@ -357,9 +357,14 @@ export default function InterventionsPage() {
         const status = row.getValue("status") as string
         const intervention = row.original
         
+        const variant = intervention.urgent ? "destructive" :
+          status === "Completato" ? "default" :
+          status === "In corso" ? "secondary" :
+          status === "Programmato" ? "outline" : "secondary"
+        
         return (
-          <Badge variant="secondary" className="whitespace-nowrap text-xs">
-            {intervention.urgent && "🔴 "}{status}
+          <Badge variant={variant}>
+            {status}
           </Badge>
         )
       },
@@ -380,14 +385,16 @@ export default function InterventionsPage() {
         const employee = row.getValue("employee") as string
         
         return (
-          <Badge variant="secondary" className="whitespace-nowrap text-xs flex items-center gap-1.5 pl-1">
-            <Avatar className="w-4 h-4">
-              <AvatarFallback className="text-xs font-medium bg-muted-foreground text-white">
+          <div className="flex items-center gap-2">
+            <Avatar className="w-6 h-6">
+              <AvatarFallback className="text-xs font-medium">
                 {employee.split(" ").map(n => n.charAt(0)).join("").toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            {employee}
-          </Badge>
+            <Badge variant="secondary">
+              {employee}
+            </Badge>
+          </div>
         )
       },
       size: 170,
