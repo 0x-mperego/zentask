@@ -53,6 +53,7 @@ export interface DataTableColumnMeta {
   variant?: FilterVariant
   options?: FilterOption[]
   placeholder?: string
+  filterIcon?: React.ComponentType<{ className?: string }>
 }
 
 declare module "@tanstack/react-table" {

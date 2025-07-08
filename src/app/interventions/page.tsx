@@ -140,22 +140,18 @@ const statusOptions: FilterOption[] = [
   {
     label: "In corso",
     value: "In corso",
-    icon: Clock,
   },
   {
     label: "Completato",
     value: "Completato",
-    icon: CheckCircle2,
   },
   {
     label: "Programmato",
     value: "Programmato",
-    icon: Circle,
   },
   {
     label: "Sospeso",
     value: "Sospeso",
-    icon: AlertCircle,
   },
 ]
 
@@ -163,12 +159,10 @@ const urgencyOptions: FilterOption[] = [
   {
     label: "Urgente",
     value: "true",
-    icon: Zap,
   },
   {
     label: "Normale",
     value: "false",
-    icon: Circle,
   },
 ]
 
@@ -176,22 +170,18 @@ const activityOptions: FilterOption[] = [
   {
     label: "Installazione",
     value: "Installazione",
-    icon: Settings,
   },
   {
     label: "Manutenzione",
     value: "Manutenzione",
-    icon: Settings,
   },
   {
     label: "Riparazione",
     value: "Riparazione",
-    icon: Settings,
   },
   {
     label: "Consulenza",
     value: "Consulenza",
-    icon: Settings,
   },
 ]
 
@@ -199,22 +189,18 @@ const clientOptions: FilterOption[] = [
   {
     label: "Azienda ABC S.r.l.",
     value: "Azienda ABC S.r.l.",
-    icon: Building2,
   },
   {
     label: "Studio Legale XYZ",
     value: "Studio Legale XYZ",
-    icon: Building2,
   },
   {
     label: "Farmacia Centrale",
     value: "Farmacia Centrale",
-    icon: Building2,
   },
   {
     label: "Negozio Elettronica",
     value: "Negozio Elettronica",
-    icon: Building2,
   },
 ]
 
@@ -222,17 +208,14 @@ const employeeOptions: FilterOption[] = [
   {
     label: "Mario Rossi",
     value: "Mario Rossi",
-    icon: Users,
   },
   {
     label: "Luigi Verdi",
     value: "Luigi Verdi",
-    icon: Users,
   },
   {
     label: "Anna Bianchi",
     value: "Anna Bianchi",
-    icon: Users,
   },
 ]
 
@@ -306,6 +289,7 @@ export default function InterventionsPage() {
         label: "Urgenza",
         variant: "multi-select",
         options: urgencyOptions,
+        filterIcon: Zap,
       },
     },
     {
@@ -322,6 +306,7 @@ export default function InterventionsPage() {
         label: "Attività",
         variant: "multi-select",
         options: activityOptions,
+        filterIcon: Settings,
       },
     },
     {
@@ -360,6 +345,7 @@ export default function InterventionsPage() {
         label: "Cliente",
         variant: "multi-select",
         options: clientOptions,
+        filterIcon: Building2,
       },
     },
     {
@@ -371,7 +357,7 @@ export default function InterventionsPage() {
         
         return (
           <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium text-white bg-transparent">
-            {intervention.urgent && "🔴 "}{status}
+            {status}
           </span>
         )
       },
@@ -383,6 +369,7 @@ export default function InterventionsPage() {
         label: "Stato",
         variant: "multi-select",
         options: statusOptions,
+        filterIcon: Circle,
       },
     },
     {
@@ -405,6 +392,7 @@ export default function InterventionsPage() {
         label: "Dipendente",
         variant: "multi-select",
         options: employeeOptions,
+        filterIcon: Users,
       },
     },
     {
