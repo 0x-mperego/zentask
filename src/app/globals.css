@@ -168,30 +168,4 @@
   .urgency-switch[data-state="checked"] [data-state="checked"] {
     background-color: white !important;
   }
-  
-  /* Calendar range styling for Vercel theme */
-  [data-range-start="true"] {
-    background-color: hsl(var(--primary)) !important;
-    color: hsl(var(--primary-foreground)) !important;
-  }
-  
-  [data-range-end="true"] {
-    background-color: hsl(var(--primary)) !important;
-    color: hsl(var(--primary-foreground)) !important;
-  }
-  
-  [data-range-middle="true"] {
-    background-color: hsl(var(--accent)) !important;
-    color: hsl(var(--accent-foreground)) !important;
-  }
-  
-  /* Additional styling for range cells */
-  .rdp-day_range_start,
-  .rdp-day_range_end {
-    background-color: hsl(var(--primary)) !important;
-  }
-  
-  .rdp-day_range_middle {
-    background-color: hsl(var(--accent)) !important;
-  }
 }
