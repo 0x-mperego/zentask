@@ -1,13 +1,26 @@
 "use client"
 
+import * as React from "react"
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  useReactTable,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
+} from "@tanstack/react-table"
 import { LayoutNew } from "@/components/layout-new"
-import { DataTable } from "@/components/data-table-old"
-import { FilterToolbar } from "@/components/filter-toolbar"
+import { DataTable } from "@/components/data-table/data-table"
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar"
 import { FormSheet } from "@/components/form-sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ColumnDef } from "@tanstack/react-table"
 import { Plus, Activity } from "lucide-react"
 
 interface ActivityType {
@@ -30,17 +43,53 @@ const mockData: ActivityType[] = [
   }
 ]
 
-const columns: ColumnDef<ActivityType>[] = [
-  {
-    accessorKey: "name",
-    header: "Nome Attività",
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("name")}</div>
-    ),
-  },
-]
-
 export default function ActivitiesPage() {
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
+
+  const columns: ColumnDef<ActivityType>[] = [
+    {
+      accessorKey: "name",
+      header: "Nome Attività",
+      cell: ({ row }) => (
+        <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-muted-foreground bg-transparent">
+          {row.getValue("name")}
+        </span>
+      ),
+      meta: {
+        label: "Nome Attività",
+      },
+    },
+  ]
+
+  const table = useReactTable({
+    data: mockData,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    enableGlobalFilter: true,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
+    },
+  })
   return (
     <LayoutNew>
       <div className="space-y-6">
@@ -75,16 +124,10 @@ export default function ActivitiesPage() {
           </FormSheet>
         </div>
 
-        {/* Filters */}
-        <FilterToolbar
-          searchPlaceholder="Cerca per nome attività..."
-          onExport={() => console.log("Export clicked")}
-        />
-
         {/* Data Table */}
         <DataTable
-          columns={columns}
-          data={mockData}
+          table={table}
+          loading={false}
           emptyState={{
             title: "Nessuna attività trovata",
             description: "Inizia aggiungendo la tua prima attività",
@@ -95,11 +138,12 @@ export default function ActivitiesPage() {
               <span className="font-medium">{activity.name}</span>
             </div>
           )}
-          sorting={{
-            enableSorting: true,
-            sorting: [{ id: "name", desc: false }]
-          }}
-        />
+        >
+          <DataTableToolbar 
+            table={table} 
+            searchPlaceholder="Cerca per nome attività..."
+          />
+        </DataTable>
       </div>
     </LayoutNew>
   )
