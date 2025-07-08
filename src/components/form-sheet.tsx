@@ -98,7 +98,7 @@ export function FormSheet({
       
       <SheetContent 
         className={cn("flex flex-col", sizeClasses[size], className)}
-        style={size === "2xl" ? { width: "30vw" } : undefined}
+        style={size === "2xl" ? { width: "50vw" } : undefined}
         onKeyDown={handleKeyDown}
         onInteractOutside={(e) => {
           if (loading) {
